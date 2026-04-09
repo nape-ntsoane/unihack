@@ -704,9 +704,6 @@ h1, h2, h3, h4, h5, h6{
 .relative{
   position: relative;
 }
-.-inset-20{
-  inset: -5rem;
-}
 .-inset-4{
   inset: -1rem;
 }
@@ -2099,11 +2096,6 @@ h1, h2, h3, h4, h5, h6{
   --tw-gradient-to: rgb(244 63 94 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
-.from-rose-500\/20{
-  --tw-gradient-from: rgb(244 63 94 / 0.2) var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(244 63 94 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
 .from-rose-600\/40{
   --tw-gradient-from: rgb(225 29 72 / 0.4) var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(225 29 72 / 0) var(--tw-gradient-to-position);
@@ -2228,9 +2220,6 @@ h1, h2, h3, h4, h5, h6{
 }
 .to-orange-300{
   --tw-gradient-to: #fdba74 var(--tw-gradient-to-position);
-}
-.to-orange-500\/10{
-  --tw-gradient-to: rgb(249 115 22 / 0.1) var(--tw-gradient-to-position);
 }
 .to-orange-700\/40{
   --tw-gradient-to: rgb(194 65 12 / 0.4) var(--tw-gradient-to-position);
@@ -2982,10 +2971,6 @@ h1, h2, h3, h4, h5, h6{
 }
 .blur-\[120px\]{
   --tw-blur: blur(120px);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-.blur-\[80px\]{
-  --tw-blur: blur(80px);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 .blur-xl{

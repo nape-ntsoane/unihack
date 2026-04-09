@@ -84,4 +84,20 @@ export interface CognitoClaims {
   exp: number;
 }
 
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  avatar: string;
+  university?: string;
+}
+
+export interface AuthContextValue {
+  user: User | null;
+  login: (email: string, password: string) => Promise<{ error?: string }>;
+  logout: () => void;
+  updateUser: (updates: Partial<User>) => void;
+  isLoading: boolean;
+}
+
 export const APP_ENV = (process.env.APP_ENV || process.env.NODE_ENV || 'local') === 'production' ? 'production' : 'local';

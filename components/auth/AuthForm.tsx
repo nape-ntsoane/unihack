@@ -34,23 +34,8 @@ export function AuthForm() {
     setLoading(true);
 
     try {
-      if (activeTab === "login") {
-        const result = await login(email, password);
-        if (result?.error) setError(result.error);
-      } else {
-        const res = await fetch('/api/auth/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password, name, university }),
-        });
-        
-        if (!res.ok) {
-          const data = await res.json();
-          setError(data.error || "Registration failed");
-        } else {
-          await login(email, password);
-        }
-      }
+      // frictionless Demo Mode entrance
+      await login(email, password);
     } catch (err) {
       setError("Something went wrong. Please try again.");
     } finally {

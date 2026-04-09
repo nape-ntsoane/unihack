@@ -7,7 +7,13 @@ import { SESSION_COOKIE } from "@/lib/auth-utils";
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-const DEFAULT_AVATAR = "👤";
+const DEFAULT_AVATAR = "✨";
+const DEMO_USER: User = { 
+  id: "demo-user-u-resonance", 
+  email: "demo@serenity.wellness", 
+  name: "Serenity Explorer", 
+  avatar: DEFAULT_AVATAR 
+};
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -28,24 +34,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(false);
   }, []);
 
-  async function login(email: string, password: string) {
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        return { error: data.error ?? 'Login failed' };
-      }
-      const userObj: User = { id: email, email, name: email, avatar: DEFAULT_AVATAR };
-      setUser(userObj);
-      Cookies.set(SESSION_COOKIE, JSON.stringify(userObj), { expires: 1 });
-      return {};
-    } catch {
-      return { error: 'Network error' };
-    }
+  async function login(_email: string, _password: string) {
+    // Bypassing real auth for frictionless Demo Mode
+    setUser(DEMO_USER);
+    Cookies.set(SESSION_COOKIE, JSON.stringify(DEMO_USER), { expires: 1 });
+    return {};
   }
 
   function logout() {
@@ -55,7 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   function updateUser(updates: Partial<User>) {
-    setUser(prev => {
+    setUser((prev: User | null) => {
       if (!prev) return null;
       const updated = { ...prev, ...updates };
       Cookies.set(SESSION_COOKIE, JSON.stringify(updated), { expires: 1 });

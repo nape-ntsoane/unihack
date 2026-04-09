@@ -1,4 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+ 
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
 
 @tailwind base;
 @tailwind components;
@@ -54,7 +59,8 @@
 
 @layer components {
   .glass-card {
-    @apply backdrop-blur-[12px] bg-white/[0.03] border border-white/10 rounded-[20px] shadow-2xl;
+    @apply backdrop-blur-[24px] bg-white/[0.03] border border-white/10 rounded-[40px] shadow-2xl;
+    padding: clamp(1.5rem, 5vw, 2.5rem); /* Responsive padding: p-6 to p-10 */
     background: linear-gradient(135deg, rgba(45, 10, 40, 0.4) 0%, rgba(26, 26, 10, 0.2) 100%);
   }
 
@@ -69,6 +75,10 @@
 
   .btn-secondary {
     @apply btn-pill bg-transparent border border-white/20 text-[var(--text-secondary)];
+  }
+
+  .orb-glow {
+    @apply absolute -inset-10 bg-gradient-to-tr from-rose-500/20 to-orange-500/10 blur-[60px] rounded-full animate-spin-slow opacity-30 pointer-events-none;
   }
 
   .input-field {

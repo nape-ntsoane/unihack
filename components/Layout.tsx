@@ -11,19 +11,25 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <div className="min-h-[100dvh] flex flex-col relative overflow-hidden selection:bg-rose-500/30">
-      {/* Background is handled by globals.css body for performance */}
-      
-      <CheckinTrigger key="checkin-trigger" />
+    <div className="min-h-screen relative overflow-x-hidden flex flex-col pt-safe-top">
+      {/* Background Layer */}
+      <div className="fixed inset-0 bg-[var(--bg)] -z-20" />
+      <div className="fixed inset-0 bg-[var(--gradients-hero)] opacity-60 -z-10" />
 
-      <main key="main-container" className="flex-1 w-full max-w-lg mx-auto px-6 overflow-y-auto overflow-x-hidden scrollbar-none pb-32">
+      {/* Main Content Area */}
+      <main className="flex-1 w-full max-w-[460px] mx-auto px-4 sm:px-0 relative z-10 flex flex-col">
+        <CheckinTrigger key="checkin-trigger" />
         <AnimatePresence mode="wait">
           <motion.div
             key={pathname}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
+            initial={{ opacity: 0, y: 12, scale: 0.99 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -12, scale: 0.99 }}
+            transition={{ 
+              duration: 0.4, 
+              ease: [0.23, 1, 0.32, 1] 
+            }}
+            className="flex-1 flex flex-col pb-24"
           >
             {children}
           </motion.div>

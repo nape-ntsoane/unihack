@@ -61,12 +61,12 @@ export function AuthForm() {
   return (
     <div className="relative w-full max-w-[420px] mx-auto group">
       {/* Animated Rotating Orb behind card */}
-      <div className="absolute -inset-20 bg-gradient-to-tr from-rose-500/20 to-orange-500/10 blur-[80px] rounded-full animate-spin-slow opacity-30 pointer-events-none" />
+      <div className="orb-glow opacity-30" />
       
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="glass-card relative z-10 p-10 overflow-hidden"
+        className="glass-card relative z-10 overflow-hidden"
       >
         <div className="space-y-8">
           <div className="text-center space-y-3">

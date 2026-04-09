@@ -14,3 +14,7 @@ since we want to have a model that is tailored on the user's data, would it be p
 in the game-feed-implementation there's code from my team member who was working on the game feed tik tok feature. I want you to integrate that into the games page. only that feature, nothing else.
 
 - the whole project is to be deployed
+= = =
+- i want you to create a screept to seed data in production for demo purposes, if it does not exist already
+- comprehensive data which when we demo would make the platform look good
+

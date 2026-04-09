@@ -366,7 +366,7 @@
     "Name": "wellness-app",
     "OauthToken": "{{resolve:secretsmanager:github-token:SecretString:::}}",
     "Platform": "WEB",
-    "Repository": "https://github.com/YOUR_GITHUB_ORG/YOUR_REPO_NAME"
+    "Repository": "https://github.com/nape-ntsoane/unihack"
    },
    "Metadata": {
     "aws:cdk:path": "WellnessStack/WellnessApp/Resource"

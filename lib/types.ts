@@ -5,6 +5,7 @@ export interface UserRecord {
   university: string;
   avatar?: string;
   createdAt: string;
+  password?: string;
 }
 
 export interface CheckinData {
@@ -90,6 +91,7 @@ export interface User {
   name: string;
   avatar: string;
   university?: string;
+  password?: string;
 }
 
 export interface AuthContextValue {

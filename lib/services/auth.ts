@@ -1,10 +1,5 @@
-import {
-  CognitoIdentityProviderClient,
-  SignUpCommand,
-  InitiateAuthCommand,
-  GlobalSignOutCommand,
-} from '@aws-sdk/client-cognito-identity-provider';
 import { APP_ENV, CognitoClaims } from '../types';
+import { getUserByEmail } from './db';
 
 const isLocal = APP_ENV !== 'production';
 
@@ -21,7 +16,7 @@ const localStub: AuthService = {
   },
 
   async signIn(email: string, _password: string) {
-    const payload = { sub: `local-${email}`, email, exp: 9999999999 };
+    const payload = { sub: `local-${email}`, email, exp: Math.floor(Date.now() / 1000) + 86400 };
     const fakeToken = Buffer.from(JSON.stringify(payload)).toString('base64');
     return { accessToken: fakeToken, idToken: fakeToken };
   },
@@ -37,44 +32,40 @@ const localStub: AuthService = {
 };
 
 const awsImpl: AuthService = {
-  async signUp(email: string, password: string) {
-    try {
-      const client = new CognitoIdentityProviderClient({ region: process.env.APP_AWS_REGION ?? process.env.AWS_REGION });
-      const response = await client.send(
-        new SignUpCommand({
-          ClientId: process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID!,
-          Username: email,
-          Password: password,
-        })
-      );
-      return { userId: response.UserSub! };
-    } catch (err) {
-      throw new Error(`signUp failed: ${(err as Error).message}`);
-    }
+  async signUp(_email: string, _password: string) {
+    throw new Error("SignUp is disabled in production. Please use pre-seeded accounts.");
   },
 
   async signIn(email: string, password: string) {
     try {
-      const client = new CognitoIdentityProviderClient({ region: process.env.APP_AWS_REGION ?? process.env.AWS_REGION });
-      const response = await client.send(
-        new InitiateAuthCommand({
-          AuthFlow: 'USER_PASSWORD_AUTH',
-          ClientId: process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID!,
-          AuthParameters: { USERNAME: email, PASSWORD: password },
-        })
-      );
-      const result = response.AuthenticationResult!;
-      return { accessToken: result.AccessToken!, idToken: result.IdToken! };
+      const user = await getUserByEmail(email);
+      if (!user) {
+        throw new Error('signIn failed: User not found');
+      }
+      
+      // Plain text password check as requested for the demo
+      if (user.password !== password) {
+        throw new Error('signIn failed: Invalid password');
+      }
+
+      const payload: CognitoClaims = { 
+        sub: user.userId, 
+        email: user.email, 
+        exp: Math.floor(Date.now() / 1000) + 86400 // 24h
+      };
+      
+      const token = Buffer.from(JSON.stringify(payload)).toString('base64');
+      // Using same token for both for simplicity in demo
+      return { accessToken: token, idToken: token };
     } catch (err) {
-      throw new Error(`signIn failed: ${(err as Error).message}`);
+      throw new Error((err as Error).message);
     }
   },
 
   async verifyToken(token: string) {
     try {
-      const segments = token.split('.');
-      const payload = segments[1].replace(/-/g, '+').replace(/_/g, '/');
-      const decoded = JSON.parse(Buffer.from(payload, 'base64').toString('utf-8')) as CognitoClaims;
+      // For this simplified version, token is just a base64 encoded JSON
+      const decoded = JSON.parse(Buffer.from(token, 'base64').toString('utf-8')) as CognitoClaims;
       if (decoded.exp <= Date.now() / 1000) {
         throw new Error('Token has expired');
       }
@@ -84,13 +75,8 @@ const awsImpl: AuthService = {
     }
   },
 
-  async signOut(accessToken: string) {
-    try {
-      const client = new CognitoIdentityProviderClient({ region: process.env.APP_AWS_REGION ?? process.env.AWS_REGION });
-      await client.send(new GlobalSignOutCommand({ AccessToken: accessToken }));
-    } catch (err) {
-      throw new Error(`signOut failed: ${(err as Error).message}`);
-    }
+  async signOut(_accessToken: string) {
+    // No server-side session to invalidate in this simple version
   },
 };
 

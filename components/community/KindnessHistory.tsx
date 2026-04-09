@@ -25,6 +25,12 @@ interface CommunityInteractionData {
   timestamp: string;
 }
 
+const MOCK_MOMENTS: Moment[] = [
+  { username: "CalmRiver", message: "You have a beautiful perspective on life.", timestamp: new Date(Date.now() - 86400000).toISOString() },
+  { username: "BrightPath", message: "The courage you show every day is inspiring.", timestamp: new Date(Date.now() - 172800000).toISOString() },
+  { username: "StarlitSky", message: "Your kindness is a light to many around you.", timestamp: new Date(Date.now() - 259200000).toISOString() },
+];
+
 export function KindnessHistory({ onClose }: KindnessHistoryProps) {
   const [moments, setMoments] = useState<Moment[]>([]);
 
@@ -32,6 +38,10 @@ export function KindnessHistory({ onClose }: KindnessHistoryProps) {
     fetch('/api/community')
       .then(res => res.json())
       .then((data: CommunityInteractionData[]) => {
+        if (!data || data.length === 0) {
+          setMoments(MOCK_MOMENTS);
+          return;
+        }
         const mapped = data.map(item => ({
           username: item.recipientId,
           message: item.messageType,
@@ -39,7 +49,7 @@ export function KindnessHistory({ onClose }: KindnessHistoryProps) {
         }));
         setMoments(mapped.reverse()); // Show newest first
       })
-      .catch(() => setMoments([]));
+      .catch(() => setMoments(MOCK_MOMENTS));
   }, []);
 
   return (

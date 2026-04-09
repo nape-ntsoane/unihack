@@ -8,12 +8,6 @@ import { SESSION_COOKIE } from "@/lib/auth-utils";
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 const DEFAULT_AVATAR = "✨";
-const DEMO_USER: User = { 
-  id: "demo-user-u-resonance", 
-  email: "demo@serenity.wellness", 
-  name: "Serenity Explorer", 
-  avatar: DEFAULT_AVATAR 
-};
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -34,11 +28,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(false);
   }, []);
 
-  async function login(_email: string, _password: string) {
-    // Bypassing real auth for frictionless Demo Mode
-    setUser(DEMO_USER);
-    Cookies.set(SESSION_COOKIE, JSON.stringify(DEMO_USER), { expires: 1 });
-    return {};
+  async function login(email: string, password: string) {
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return { error: data.error || 'Login failed' };
+      }
+
+      const userData: User = data.user || {
+        id: data.userId || 'unknown',
+        email: email,
+        name: data.name || email.split('@')[0],
+        avatar: data.avatar || DEFAULT_AVATAR
+      };
+
+      setUser(userData);
+      Cookies.set(SESSION_COOKIE, JSON.stringify(userData), { expires: 1 });
+      return {};
+    } catch (err) {
+      return { error: 'Connection error. Please try again.' };
+    }
   }
 
   function logout() {

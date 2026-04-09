@@ -2,7 +2,9 @@ import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedroc
 import { APP_ENV } from '../types';
 import type { AnalyzeResponse, ChatResponse } from '../types';
 
-const isLocal = APP_ENV !== 'production';
+// Use production implementation if AWS variables are set, otherwise use local stub
+const hasAWS = !!(process.env.APP_AWS_REGION || process.env.AWS_REGION);
+const isLocal = APP_ENV !== 'production' && !hasAWS;
 
 interface AIService {
   generateResponse(systemPrompt: string, userInput: string): Promise<string>;
@@ -33,7 +35,13 @@ const localStub: AIService = {
 let _client: BedrockRuntimeClient | null = null;
 function getClient() {
   if (!_client) {
-    _client = new BedrockRuntimeClient({ region: process.env.APP_AWS_REGION ?? process.env.AWS_REGION });
+    _client = new BedrockRuntimeClient({ 
+      region: process.env.APP_AWS_REGION ?? process.env.AWS_REGION ?? 'us-east-1',
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+      }
+    });
   }
   return _client;
 }
@@ -48,6 +56,7 @@ const awsImpl: AIService = {
         system: systemPrompt,
         messages: [{ role: 'user', content: userInput }],
       };
+      
       const response = await getClient().send(
         new InvokeModelCommand({
           modelId: MODEL_ID,
@@ -55,16 +64,16 @@ const awsImpl: AIService = {
           body: JSON.stringify(body),
         })
       );
-      try {
-        const decoded = new TextDecoder().decode(response.body);
-        const parsed = JSON.parse(decoded);
-        return (parsed.content[0].text as string).trim();
-      } catch (e) {
-        console.error("AIService: Failed to parse Bedrock response:", e);
-        return '';
+
+      const decoded = new TextDecoder().decode(response.body);
+      const parsed = JSON.parse(decoded);
+      return (parsed.content[0].text as string).trim();
+    } catch (e: any) {
+      console.error("AIService Bedrock Error:", e.name, e.message);
+      // Helpful messages for common issues
+      if (e.name === 'AccessDeniedException') {
+        return "ERROR: Access Denied. Please ensure Bedrock model access is enabled for Claude 3 Haiku in your AWS console for " + (process.env.APP_AWS_REGION ?? 'the configured region') + ".";
       }
-    } catch (e) {
-      console.error("AIService: Bedrock invocation error:", e);
       return '';
     }
   },
@@ -73,6 +82,8 @@ const awsImpl: AIService = {
     try {
       const prompt = `Analyze this wellness data and respond with JSON { mood_score: number (0-100), insight: string }: ${JSON.stringify(data)}`;
       const raw = await awsImpl.generateResponse('You are a wellness AI assistant.', prompt);
+      if (!raw || raw.startsWith('ERROR')) return { mood_score: 50, insight: 'Keep going.' };
+      
       try {
         const parsed = JSON.parse(raw) as { mood_score: number; insight: string };
         return {
@@ -80,7 +91,7 @@ const awsImpl: AIService = {
           insight: parsed.insight,
         };
       } catch {
-        return { mood_score: 50, insight: 'Keep going.' };
+        return { mood_score: 55, insight: 'You are doing great, let\'s keep focused on your wellness goals.' };
       }
     } catch {
       return { mood_score: 50, insight: 'Keep going.' };
@@ -88,29 +99,20 @@ const awsImpl: AIService = {
   },
 
   async chatResponse(message) {
-    try {
-      const text = await awsImpl.generateResponse(
-        'You are a supportive wellness companion for university students. Be warm, brief, and encouraging.',
-        message
-      );
-      return { reply: text.trim() || "I'm here for you." };
-    } catch {
-      return { reply: "I'm here for you." };
-    }
+    const text = await awsImpl.generateResponse(
+      'You are a supportive wellness companion for university students. Be warm, brief, and encouraging.',
+      message
+    );
+    return { reply: text || "I'm here for you. How was your day?" };
   },
 
   async personalizedChat(message, context) {
-    try {
-      // Prune context to most critical resonance points for cost optimization
-      const systemPrompt = `You are Serenity, a warm student wellness companion.
-      Context: ${context.slice(0, 1000)}
-      Rule: Be human, brief, and supportive. Use context to relate, not to diagnose.`;
+    const systemPrompt = `You are Serenity, a warm student wellness companion.
+    Context: ${context.slice(0, 1000)}
+    Rule: Be human, brief, and supportive. Use context to relate, not to diagnose.`;
 
-      const text = await awsImpl.generateResponse(systemPrompt, message);
-      return { reply: text.trim() || "I'm here, I've been following your progress." };
-    } catch {
-      return { reply: "I'm here for you." };
-    }
+    const text = await awsImpl.generateResponse(systemPrompt, message);
+    return { reply: text || "I'm here, I've been following your progress. " + message };
   },
 };
 

@@ -26,6 +26,7 @@ export interface DBService {
   getGameInteractions(userId: string): Promise<GameInteractionData[]>;
   saveCommunityInteraction(userId: string, data: CommunityInteractionData): Promise<void>;
   getCommunityInteractions(userId: string): Promise<CommunityInteractionData[]>;
+  getUserByEmail(email: string): Promise<UserRecord | null>;
 }
 
 // ─── Local Stub ──────────────────────────────────────────────────────────────
@@ -75,6 +76,10 @@ const localStub: DBService = {
 
   async getCommunityInteractions(userId: string): Promise<CommunityInteractionData[]> {
     return store.community.get(userId) ?? [];
+  },
+
+  async getUserByEmail(email: string): Promise<UserRecord | null> {
+    return Array.from(store.users.values()).find(u => u.email === email) ?? null;
   },
 };
 
@@ -220,6 +225,26 @@ const awsImpl: DBService = {
       throw new Error(`getCommunityInteractions failed: ${(err as Error).message}`);
     }
   },
+
+  async getUserByEmail(email: string): Promise<UserRecord | null> {
+    try {
+      // Using Scan for simplicity in hackathon demo. 
+      // For production, a Global Secondary Index on 'email' is recommended.
+      const { ScanCommand } = await import('@aws-sdk/client-dynamodb');
+      const result = await getClient().send(
+        new ScanCommand({
+          TableName: process.env.DYNAMODB_USERS_TABLE,
+          FilterExpression: 'email = :email',
+          ExpressionAttributeValues: marshall({ ':email': email }),
+        })
+      );
+      
+      if (!result.Items || result.Items.length === 0) return null;
+      return unmarshall(result.Items[0]) as UserRecord;
+    } catch (err) {
+      throw new Error(`getUserByEmail failed: ${(err as Error).message}`);
+    }
+  },
 };
 
 // ─── Exports ──────────────────────────────────────────────────────────────────
@@ -233,4 +258,5 @@ export const {
   getGameInteractions,
   saveCommunityInteraction,
   getCommunityInteractions,
+  getUserByEmail,
 } = isLocal ? localStub : awsImpl;

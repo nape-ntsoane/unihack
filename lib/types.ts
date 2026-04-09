@@ -2,6 +2,7 @@ export interface UserRecord {
   userId: string;
   email: string;
   name: string;
+  university: string;
   createdAt: string;
 }
 

@@ -27,8 +27,12 @@ export default function GamesPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-orange-500/30 border-t-orange-500 rounded-full animate-spin" />
+      <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center space-y-4">
+        <div className="relative">
+          <div className="w-12 h-12 rounded-2xl bg-rose-500/20 animate-pulse" />
+          <div className="absolute inset-0 border-2 border-rose-500/20 rounded-2xl animate-spin-slow" />
+        </div>
+        <p className="label-caps animate-pulse">Entering Serenity...</p>
       </div>
     );
   }
@@ -39,22 +43,22 @@ export default function GamesPage() {
         {!isPlaying ? (
           <motion.div 
             key="dashboard-view"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="flex-1 flex flex-col pt-12 animate-card-enter"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="flex-1 flex flex-col pt-12"
           >
             <GamesDashboard onPlay={() => setIsPlaying(true)} />
           </motion.div>
         ) : (
           <motion.div 
             key="game-feed-view"
-            className="fixed inset-0 bg-black z-[150]"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
+            className="fixed inset-0 bg-[var(--bg)] z-[150]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           >
-            <div className="h-full w-full">
+            <div className="h-full w-full bg-gradient-to-br from-[#1A0A14] to-[#2D0A28]">
               <GameFeed onExit={() => setIsPlaying(false)} />
             </div>
           </motion.div>

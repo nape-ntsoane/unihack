@@ -7,6 +7,8 @@ import { TherapistCard } from "@/components/sessions/TherapistCard";
 import { ChatPreview } from "@/components/sessions/ChatPreview";
 import { TherapistModal } from "@/components/sessions/TherapistModal";
 import type { Therapist } from "@/types";
+import { motion, AnimatePresence } from "framer-motion";
+import { Stethoscope, Search, Sparkles } from "lucide-react";
 
 const MOCK_THERAPISTS: Therapist[] = [
   {
@@ -79,81 +81,112 @@ export default function SessionsPage() {
 
   return (
     <Layout>
-      <div className="space-y-8 animate-card-enter max-w-lg mx-auto pb-12">
-        <header className="space-y-4">
-          <h1 className="text-3xl font-bold text-gray-800">Support Sessions</h1>
+      <div className="space-y-10 max-w-lg mx-auto pb-40">
+        <header className="space-y-6 pt-10 px-2 text-center">
+          <div className="mx-auto w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center text-[var(--primary)] border border-rose-500/10 mb-4 animate-float">
+            <Stethoscope size={24} strokeWidth={1.5} />
+          </div>
+          <div className="space-y-2">
+            <h1 className="text-3xl font-black text-[var(--text-primary)]">Human Support</h1>
+            <p className="text-sm text-[var(--text-muted)] font-medium">Connect with verified mindfulness guides</p>
+          </div>
           
-          <div className="flex bg-gray-100 p-1.5 rounded-3xl w-full">
+          <div className="flex bg-white/[0.04] p-1 rounded-2xl border border-white/5 w-full">
             <button
               onClick={() => setActiveTab("your-space")}
-              className={`flex-1 py-3 text-xs font-bold rounded-2xl transition-all ${
-                activeTab === "your-space" ? "bg-white shadow-sm text-gray-800" : "text-gray-400"
+              className={`flex-1 py-3 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all ${
+                activeTab === "your-space" ? "bg-white/10 text-[var(--primary)] shadow-sm" : "text-[var(--text-muted)]"
               }`}
             >
               Your Space
             </button>
             <button
               onClick={() => setActiveTab("find-support")}
-              className={`flex-1 py-3 text-xs font-bold rounded-2xl transition-all ${
-                activeTab === "find-support" ? "bg-white shadow-sm text-gray-800" : "text-gray-400"
+              className={`flex-1 py-3 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all ${
+                activeTab === "find-support" ? "bg-white/10 text-[var(--primary)] shadow-sm" : "text-[var(--text-muted)]"
               }`}
             >
-              Find Support
+              Explore Guides
             </button>
           </div>
         </header>
 
-        {activeTab === "your-space" && (
-          <div className="space-y-8 animate-scale-in">
-            {primaryTherapist ? (
-              <>
-                <PrimaryTherapistCard 
-                  therapist={primaryTherapist} 
-                  onBook={() => alert("Booking functionality coming soon! 📅")} 
-                />
-                
-                <section className="space-y-4">
-                  <h2 className="text-xs font-bold text-gray-400 uppercase tracking-widest px-2">History</h2>
-                  <ChatPreview 
-                    lastMessage="I'm looking forward to our next talk. Remember to take those deep breaths."
-                    time="YESTERDAY"
-                    isUnread={false}
-                    onClick={() => {}}
+        <AnimatePresence mode="wait">
+          {activeTab === "your-space" && (
+            <motion.div 
+              key="your-space"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              className="space-y-10"
+            >
+              {primaryTherapist ? (
+                <>
+                  <PrimaryTherapistCard 
+                    therapist={primaryTherapist} 
+                    onBook={() => alert("Booking functionality coming soon! 📅")} 
                   />
-                  <ChatPreview 
-                    lastMessage="Let's focus on identifying the triggers for those moments."
-                    time="LAST WEEK"
-                    isUnread={false}
-                    onClick={() => {}}
-                  />
-                </section>
-              </>
-            ) : (
-              <div className="py-20 flex flex-col items-center justify-center text-center space-y-4 opacity-50">
-                <div className="text-6xl">🛶</div>
-                <p className="font-bold text-gray-800">No therapist connected yet.</p>
-                <button 
-                  onClick={() => setActiveTab("find-support")}
-                  className="text-orange-400 text-xs font-bold uppercase tracking-widest"
-                >
-                  Find Support →
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+                  
+                  <section className="space-y-4">
+                    <div className="flex items-center gap-2 px-2">
+                       <Sparkles size={14} className="text-[var(--primary)]" />
+                       <h2 className="label-caps">Recent Presence</h2>
+                    </div>
+                    <ChatPreview 
+                      lastMessage="I'm looking forward to our next talk. Remember to take those deep breaths."
+                      time="12h ago"
+                      isUnread={false}
+                      onClick={() => {}}
+                    />
+                    <ChatPreview 
+                      lastMessage="Let's focus on identifying the triggers for those moments."
+                      time="3d ago"
+                      isUnread={false}
+                      onClick={() => {}}
+                    />
+                  </section>
+                </>
+              ) : (
+                <div className="py-24 glass-card border-dashed bg-transparent flex flex-col items-center justify-center text-center space-y-6">
+                  <div className="w-16 h-16 rounded-3xl bg-white/[0.03] flex items-center justify-center text-3xl opacity-50">
+                    🛶
+                  </div>
+                  <div className="space-y-2">
+                    <p className="font-bold text-[var(--text-primary)]">Awaiting Connection</p>
+                    <p className="text-xs text-[var(--text-muted)] max-w-[200px] leading-relaxed">
+                      You haven't paired with a mindfulness guide yet. Explore our verified companions.
+                    </p>
+                  </div>
+                  <button 
+                    onClick={() => setActiveTab("find-support")}
+                    className="btn-secondary py-2.5 px-6 text-[10px] uppercase font-bold tracking-widest flex items-center gap-2"
+                  >
+                    <Search size={14} />
+                    Explore Guides
+                  </button>
+                </div>
+              )}
+            </motion.div>
+          )}
 
-        {activeTab === "find-support" && (
-          <div className="grid gap-4 animate-scale-in">
-            {MOCK_THERAPISTS.filter(t => t.id !== primaryTherapistId).map((therapist) => (
-              <TherapistCard 
-                key={therapist.id} 
-                therapist={therapist} 
-                onConnect={() => handleConnect(therapist)} 
-              />
-            ))}
-          </div>
-        )}
+          {activeTab === "find-support" && (
+            <motion.div 
+              key="find-support"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="grid gap-6 px-1"
+            >
+              {MOCK_THERAPISTS.filter(t => t.id !== primaryTherapistId).map((therapist) => (
+                <TherapistCard 
+                  key={therapist.id} 
+                  therapist={therapist} 
+                  onConnect={() => handleConnect(therapist)} 
+                />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {isModalOpen && (

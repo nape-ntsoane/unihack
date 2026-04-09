@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { chatResponse } from "@/lib/services/ai";
+import { chatResponse, personalizedChat } from "@/lib/services/ai";
 
 export async function POST(req: NextRequest) {
-  let body: { message?: string };
+  let body: { message?: string; context?: string };
   try {
     body = await req.json();
   } catch {
@@ -12,7 +12,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "message is required" }, { status: 400 });
   }
   try {
-    const result = await chatResponse(body.message);
+    const result = body.context 
+      ? await personalizedChat(body.message, body.context)
+      : await chatResponse(body.message);
     return NextResponse.json(result);
   } catch {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

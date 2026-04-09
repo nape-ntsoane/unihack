@@ -18,3 +18,9 @@ in the game-feed-implementation there's code from my team member who was working
 - i want you to create a screept to seed data in production for demo purposes, if it does not exist already
 - comprehensive data which when we demo would make the platform look good
 
+= = =
+- do a proper scrub-down of the project, the produciton side of it, eliminating any potential errors we may incur in the production environment when we're using the platform, for example say when we're registering, scan everything, leave no stone unturned
+
+
+= = =
+- another thing is cost optimization which i forgot to mention, our accounts I believe are allocated 500 credits, I'm not sure what it translates to but come up with a plan to be cost-efficient

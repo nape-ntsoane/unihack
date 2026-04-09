@@ -1,15 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import { 
+  Gamepad2, 
+  Users, 
+  MessageCircle, 
+  Stethoscope,
+  LogOut,
+  User as UserIcon,
+  BarChart3
+} from "lucide-react";
 
 const NAV_ITEMS = [
-  { label: "Games", icon: "🎮", href: "/games" },
-  { label: "Community", icon: "👥", href: "/community" },
-  { label: "Chat", icon: "💬", href: "/chat" },
-  { label: "Sessions", icon: "🩺", href: "/sessions" },
+  { label: "Games", icon: Gamepad2, href: "/games" },
+  { label: "Ripple", icon: Users, href: "/community" },
+  { label: "Guide", icon: MessageCircle, href: "/chat" },
+  { label: "Assist", icon: Stethoscope, href: "/sessions" },
 ];
 
 export function BottomNav() {
@@ -24,59 +33,78 @@ export function BottomNav() {
   };
 
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg z-50">
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg z-[100] px-4 pb-6">
       {/* Account Menu Popover */}
       {showAccountMenu && (
-        <div className="absolute bottom-[calc(100%+1rem)] left-4 right-4 bg-white/90 backdrop-blur-xl border border-gray-100 rounded-[32px] shadow-2xl p-2 animate-scale-in">
+        <div className="absolute bottom-[calc(100%-8px)] left-4 right-4 glass-card p-2 animate-scale-in mb-4">
           <div className="flex flex-col gap-1">
             <Link
               href="/stats"
               onClick={() => setShowAccountMenu(false)}
-              className="flex items-center gap-3 px-6 py-4 rounded-2xl hover:bg-orange-50 text-gray-700 font-bold transition-colors"
+              className="flex items-center gap-4 px-6 py-4 rounded-2xl hover:bg-white/5 text-[var(--text-secondary)] font-bold transition-all active:scale-[0.98]"
             >
-              <span className="text-xl">📊</span>
-              <span>My Insights</span>
+              <BarChart3 size={20} strokeWidth={1.5} className="text-[var(--primary)]" />
+              <span className="text-sm">My Growth Insights</span>
             </Link>
             <Link
               href="/account"
               onClick={() => setShowAccountMenu(false)}
-              className="flex items-center gap-3 px-6 py-4 rounded-2xl hover:bg-gray-50 text-gray-700 font-bold transition-colors"
+              className="flex items-center gap-4 px-6 py-4 rounded-2xl hover:bg-white/5 text-[var(--text-secondary)] font-bold transition-all active:scale-[0.98]"
             >
-              <span className="text-xl">🛠️</span>
-              <span>My Account</span>
+              <UserIcon size={20} strokeWidth={1.5} className="text-[var(--primary)]" />
+              <span className="text-sm">Profile Settings</span>
             </Link>
+            <div className="h-px bg-white/5 mx-4 my-1" />
             <button
               onClick={handleLogout}
-              className="flex items-center gap-3 px-6 py-4 rounded-2xl hover:bg-rose-50 text-rose-500 font-bold transition-colors text-left"
+              className="flex items-center gap-4 px-6 py-4 rounded-2xl hover:bg-rose-500/10 text-rose-400 font-bold transition-all active:scale-[0.98] text-left"
             >
-              <span className="text-xl">🚪</span>
-              <span>Logout</span>
+              <LogOut size={20} strokeWidth={1.5} />
+              <span className="text-sm">Logout Space</span>
             </button>
           </div>
         </div>
       )}
 
-      {/* Main Nav Bar (Attached) */}
-      <nav className="bg-white/90 backdrop-blur-xl border-t border-gray-100 rounded-t-[32px] shadow-[0_-8px_30px_rgb(0,0,0,0.04)] flex items-center justify-around p-3 pb-8">
+      {/* Main Nav Bar */}
+      <nav className="glass-card backdrop-blur-[20px] bg-white/[0.04] border-white/10 rounded-[32px] flex items-center justify-between p-2 px-3 shadow-2xl">
         {NAV_ITEMS.map((item) => {
           const isActive = pathname === item.href;
+          const Icon = item.icon;
           return (
             <Link
               key={item.label}
               href={item.href}
               onClick={() => setShowAccountMenu(false)}
-              className={`flex flex-col items-center gap-1 p-2 rounded-2xl transition-all duration-200 ${
+              className={`relative flex flex-col items-center gap-1.5 p-3 px-4 rounded-2xl transition-all duration-300 ${
                 isActive
-                  ? "text-orange-500 scale-105"
-                  : "text-gray-400 hover:text-gray-600"
+                  ? "text-[var(--primary)]"
+                  : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
               }`}
             >
-              <span className="text-xl">{item.icon}</span>
-              <span className="text-[10px] font-bold uppercase tracking-wider">
-                {item.label}
-              </span>
+              <Icon 
+                size={22} 
+                strokeWidth={isActive ? 2 : 1.5} 
+                className={`transition-all duration-300 ${isActive ? "drop-shadow-[0_0_8px_rgba(251,113,133,0.5)] scale-110" : ""}`} 
+              />
+              
+              <AnimatePresence>
+                {isActive && (
+                  <motion.span 
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-[10px] font-bold uppercase tracking-[0.08em]"
+                  >
+                    {item.label}
+                  </motion.span>
+                )}
+              </AnimatePresence>
+
               {isActive && (
-                <div className="w-1 h-1 rounded-full bg-orange-500 animate-pulse mt-0.5" />
+                <motion.div 
+                  layoutId="nav-dot"
+                  className="absolute -bottom-1 w-1 h-1 rounded-full bg-[var(--primary)] shadow-[0_0_8px_var(--primary)]" 
+                />
               )}
             </Link>
           );
@@ -85,16 +113,19 @@ export function BottomNav() {
         {/* Account Button */}
         <button
           onClick={() => setShowAccountMenu(!showAccountMenu)}
-          className={`flex flex-col items-center gap-1 p-2 rounded-2xl transition-all duration-200 ${
+          className={`flex items-center justify-center p-3 rounded-2xl transition-all duration-300 ${
             showAccountMenu
-              ? "text-gray-800 scale-105"
-              : "text-gray-400 hover:text-gray-600"
+              ? "text-[var(--primary)]"
+              : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
           }`}
         >
-          <span className="text-xl">{user?.avatar || "👤"}</span>
-          <span className="text-[10px] font-bold uppercase tracking-wider">
-            Account
-          </span>
+          <div className={`p-0.5 rounded-full border-2 transition-all duration-300 ${
+            showAccountMenu ? "border-[var(--primary)] scale-110 shadow-[0_0_12px_rgba(251,113,133,0.3)]" : "border-transparent"
+          }`}>
+            <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-rose-400 to-orange-300 flex items-center justify-center text-sm ring-2 ring-white/10 shadow-inner">
+               {user?.avatar || "👤"}
+            </div>
+          </div>
         </button>
       </nav>
     </div>

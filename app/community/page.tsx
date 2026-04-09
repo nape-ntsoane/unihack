@@ -80,14 +80,14 @@ export default function CommunityPage() {
           {step === "intro" && (
             <button 
               onClick={() => setStep("history")}
-              className="text-xs font-bold text-orange-400 bg-orange-50 px-4 py-2 rounded-full hover:bg-orange-100 transition-colors"
+              className="text-[10px] font-bold text-[var(--text-secondary)] bg-white/5 border border-white/10 px-4 py-2 rounded-full hover:bg-white/10 transition-all uppercase tracking-widest"
             >
               My Moments
             </button>
           )}
         </div>
 
-        <div className="w-full max-w-md flex flex-col h-full overflow-hidden">
+        <div className="w-full max-w-sm flex flex-col h-full overflow-hidden">
           {step === "intro" && (
             <div className="flex-1 flex flex-col justify-center">
               <CommunityIntro onStart={() => setStep("encounter")} />
@@ -96,7 +96,7 @@ export default function CommunityPage() {
 
           {step === "encounter" && (
             <div className="flex-1 flex flex-col justify-center space-y-4 px-2 overflow-hidden">
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 animate-float">
                 <UserMomentCard 
                   username={currentUser.username} 
                   descriptor={currentUser.descriptor} 
@@ -111,8 +111,8 @@ export default function CommunityPage() {
                     onSelect={handleSend} 
                   />
                   
-                  <div className="px-6 space-y-3 pb-8">
-                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest text-center">
+                  <div className="px-6 space-y-4 pb-8">
+                    <h3 className="label-caps text-center">
                       Or send a quick vibe
                     </h3>
                     <ReactionBar onReact={handleSend} />
@@ -120,10 +120,10 @@ export default function CommunityPage() {
                 </div>
 
                 {showNextFeedback && (
-                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/60 backdrop-blur-sm rounded-[32px] animate-scale-in">
-                    <div className="text-4xl mb-2">✨</div>
-                    <div className="text-sm font-bold text-gray-800 tracking-tight">Support Sent!</div>
-                    <div className="text-[10px] text-gray-400 uppercase tracking-[0.2em] mt-1 font-bold">Ripple effect in progress...</div>
+                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[var(--bg)]/60 backdrop-blur-sm rounded-[32px] animate-scale-in">
+                    <div className="text-4xl mb-2 animate-bounce">✨</div>
+                    <div className="text-sm font-bold text-[var(--text-primary)] tracking-tight">Support Sent!</div>
+                    <div className="label-caps mt-1 text-[var(--primary)]">Ripple effect in progress...</div>
                   </div>
                 )}
               </div>

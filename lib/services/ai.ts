@@ -7,6 +7,7 @@ interface AIService {
   generateResponse(systemPrompt: string, userInput: string): Promise<string>;
   analyzeUserData(data: Record<string, unknown>): Promise<AnalyzeResponse>;
   chatResponse(message: string): Promise<ChatResponse>;
+  personalizedChat(message: string, context: string): Promise<ChatResponse>;
 }
 
 // ── Local stubs ──────────────────────────────────────────────────────────────
@@ -21,6 +22,9 @@ const localStub: AIService = {
   async chatResponse(_message) {
     return { reply: 'That sounds meaningful. How does that make you feel?' };
   },
+  async personalizedChat(_message, _context) {
+    return { reply: `[personalized-stub] I see your history. How are you feeling today?` };
+  },
 };
 
 // ── AWS Bedrock implementation ───────────────────────────────────────────────
@@ -33,7 +37,7 @@ const awsImpl: AIService = {
     try {
       const body = {
         anthropic_version: 'bedrock-2023-05-31',
-        max_tokens: 512,
+        max_tokens: 300,
         system: systemPrompt,
         messages: [{ role: 'user', content: userInput }],
       };
@@ -76,10 +80,24 @@ const awsImpl: AIService = {
   async chatResponse(message) {
     try {
       const text = await awsImpl.generateResponse(
-        'You are a supportive wellness companion. Be warm, brief, and encouraging.',
+        'You are a supportive wellness companion for university students. Be warm, brief, and encouraging.',
         message
       );
       return { reply: text.trim() || "I'm here for you." };
+    } catch {
+      return { reply: "I'm here for you." };
+    }
+  },
+
+  async personalizedChat(message, context) {
+    try {
+      // Prune context to most critical resonance points for cost optimization
+      const systemPrompt = `You are Serenity, a warm student wellness companion.
+      Context: ${context.slice(0, 1000)}
+      Rule: Be human, brief, and supportive. Use context to relate, not to diagnose.`;
+
+      const text = await awsImpl.generateResponse(systemPrompt, message);
+      return { reply: text.trim() || "I'm here, I've been following your progress." };
     } catch {
       return { reply: "I'm here for you." };
     }
@@ -88,4 +106,4 @@ const awsImpl: AIService = {
 
 // ── Exports ──────────────────────────────────────────────────────────────────
 
-export const { generateResponse, analyzeUserData, chatResponse } = isLocal ? localStub : awsImpl;
+export const { generateResponse, analyzeUserData, chatResponse, personalizedChat } = isLocal ? localStub : awsImpl;

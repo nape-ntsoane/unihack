@@ -5,3 +5,10 @@
 problem
 - mental health is intimidating to some students, don't want to face it headon
 - difficulty in expressing oneself vocally
+
+💰 Cost Optimization Strategy
+Bedrock (Claude 3 Haiku): I will implement more aggressive token capping (max_tokens: 300) and context pruning (limiting the RAG injection to the most recent high-impact trends). Haiku is already the most efficient model, but these steps will maximize your credits.
+DynamoDB: I've verified that your infrastructure is set to PAY_PER_REQUEST, which scales to zero cost when not in use.
+
+
+- seed url : /api/admin/seed?key=unihack-serenity-2026

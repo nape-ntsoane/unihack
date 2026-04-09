@@ -1,14 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import { 
+  CognitoIdentityProviderClient, 
+  AdminCreateUserCommand, 
+  AdminSetUserPasswordCommand,
+  AdminGetUserCommand
+} from "@aws-sdk/client-cognito-identity-provider";
+import { 
   createUser, 
   getUserProfile, 
   saveCheckin, 
   saveGameInteraction, 
   saveCommunityInteraction 
 } from "@/lib/services/db";
+import { APP_ENV } from "@/lib/types";
 
-const DEMO_USER_ID = "demo-student-001";
+const DEMO_EMAIL = "demo@serenity.ac.za";
+const DEMO_PASSWORD = "Serenity2026!";
 const SECRET_KEY = process.env.ADMIN_SECRET_KEY || "unihack-serenity-2026";
+
+const cognito = new CognitoIdentityProviderClient({
+  region: process.env.APP_AWS_REGION || process.env.AWS_REGION
+});
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -18,33 +30,75 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
   }
 
-  const userId = searchParams.get("userId") || DEMO_USER_ID;
+  let userId = searchParams.get("userId");
 
   try {
-    // 1. Idempotency Check: Does demo user exist?
-    // Using the service abstraction which handles local/prod logic and IAM roles
-    const existingUser = await getUserProfile(userId);
+    // 1. Production Cognito Automation
+    if (APP_ENV === 'production' && !userId) {
+      const userPoolId = process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID;
+      
+      console.log("🛠️ Checking Cognito user...");
+      try {
+        const getCmd = new AdminGetUserCommand({
+          UserPoolId: userPoolId,
+          Username: DEMO_EMAIL,
+        });
+        const existingCognito = await cognito.send(getCmd);
+        userId = existingCognito.UserAttributes?.find(a => a.Name === 'sub')?.Value || null;
+      } catch (e: any) {
+        if (e.name === 'UserNotFoundException') {
+          console.log("🚀 Creating Cognito demo user...");
+          const createCmd = new AdminCreateUserCommand({
+            UserPoolId: userPoolId,
+            Username: DEMO_EMAIL,
+            UserAttributes: [
+              { Name: 'email', Value: DEMO_EMAIL },
+              { Name: 'email_verified', Value: 'true' },
+            ],
+            MessageAction: 'SUPPRESS',
+          });
+          const newUser = await cognito.send(createCmd);
+          userId = newUser.User?.Attributes?.find(a => a.Name === 'sub')?.Value || null;
 
-    if (existingUser) {
+          console.log("🔐 Setting demo password...");
+          await cognito.send(new AdminSetUserPasswordCommand({
+            UserPoolId: userPoolId,
+            Username: DEMO_EMAIL,
+            Password: DEMO_PASSWORD,
+            Permanent: true,
+          }));
+        } else {
+          throw e;
+        }
+      }
+    }
+
+    // Fallback to demo ID if still not set (local or failed cognito)
+    userId = userId || "demo-student-001";
+
+    // 2. Idempotency Check (DynamoDB)
+    const existingProfile = await getUserProfile(userId);
+    if (existingProfile) {
       return NextResponse.json({ 
-        message: "Database already initialized with demo data.",
-        userId: DEMO_USER_ID 
+        message: "Account already exists and is seeded.",
+        userId,
+        email: DEMO_EMAIL
       });
     }
 
-    console.log("🚀 Initializing Production Demo Data (IAM-Powered)...");
+    console.log(`🚀 Seeding wellness data for user: ${userId}`);
 
-    // 2. Seed Demo User
+    // 3. Seed Profile
     await createUser({
-      userId: userId,
-      email: "demo@serenity.ac.za",
+      userId,
+      email: DEMO_EMAIL,
       name: "Neo Serenity",
       university: "University of Cape Town",
       avatar: "🧘",
       createdAt: new Date().toISOString(),
     });
 
-    // 3. Seed 14 Days of Check-ins (Simulating a positive trend)
+    // 4. Seed 14 Days of Check-ins
     for (let i = 0; i < 14; i++) {
       const date = new Date();
       date.setDate(date.getDate() - i);
@@ -52,7 +106,7 @@ export async function GET(req: NextRequest) {
       const stress = Math.max(0, 70 - (14 - i) * 3 + Math.floor(Math.random() * 10));
 
       await saveCheckin(userId, {
-        userId: userId,
+        userId,
         timestamp: date.toISOString(),
         mood,
         stress,
@@ -60,13 +114,13 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    // 4. Seed Game History
+    // 5. Seed Game History
     const gameTypes = ["pattern", "color-match", "focus-shimmer"];
     for (let i = 0; i < 20; i++) {
       const date = new Date();
       date.setHours(date.getHours() - i * 4);
       await saveGameInteraction(userId, {
-        userId: userId,
+        userId,
         timestamp: date.toISOString(),
         gameId: gameTypes[i % gameTypes.length],
         score: 400 + i * 20 + Math.floor(Math.random() * 200),
@@ -74,12 +128,12 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    // 5. Seed Community Ripples
+    // 6. Seed Community Ripples
     for (let i = 0; i < 8; i++) {
       const date = new Date();
       date.setHours(date.getHours() - i * 12);
       await saveCommunityInteraction(userId, {
-        userId: userId,
+        userId,
         timestamp: date.toISOString(),
         content: `Ripples of kindness sent #${i + 1}`,
         type: "kindness"
@@ -88,15 +142,20 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ 
       success: true, 
-      message: "Production demo data successfully initialized via DBService.",
-      userId: userId
+      message: "Zero-Friction demo access initialized.",
+      credentials: {
+        email: DEMO_EMAIL,
+        password: DEMO_PASSWORD
+      },
+      userId
     });
 
   } catch (err: any) {
     console.error("Seeding error:", err);
     return NextResponse.json({ 
       error: "Seeding failed", 
-      details: err.message 
+      details: err.message,
+      stack: APP_ENV !== 'production' ? err.stack : undefined
     }, { status: 500 });
   }
 }

@@ -80,12 +80,18 @@ const localStub: DBService = {
 
 // ─── AWS Implementation ───────────────────────────────────────────────────────
 
-const dynamoClient = new DynamoDBClient({ region: process.env.APP_AWS_REGION ?? process.env.AWS_REGION });
+let _client: DynamoDBClient | null = null;
+function getClient() {
+  if (!_client) {
+    _client = new DynamoDBClient({ region: process.env.APP_AWS_REGION ?? process.env.AWS_REGION });
+  }
+  return _client;
+}
 
 const awsImpl: DBService = {
   async createUser(user: UserRecord): Promise<void> {
     try {
-      await dynamoClient.send(
+      await getClient().send(
         new PutItemCommand({
           TableName: process.env.DYNAMODB_USERS_TABLE,
           Item: marshall(user),
@@ -98,7 +104,7 @@ const awsImpl: DBService = {
 
   async getUserProfile(userId: string): Promise<UserRecord | null> {
     try {
-      const result = await dynamoClient.send(
+      const result = await getClient().send(
         new GetItemCommand({
           TableName: process.env.DYNAMODB_USERS_TABLE,
           Key: marshall({ userId }),
@@ -116,7 +122,7 @@ const awsImpl: DBService = {
 
   async saveCheckin(userId: string, data: CheckinData): Promise<void> {
     try {
-      await dynamoClient.send(
+      await getClient().send(
         new PutItemCommand({
           TableName: process.env.DYNAMODB_CHECKINS_TABLE,
           Item: marshall(data),
@@ -129,7 +135,7 @@ const awsImpl: DBService = {
 
   async getUserInsights(userId: string, limit?: number): Promise<CheckinData[]> {
     try {
-      const result = await dynamoClient.send(
+      const result = await getClient().send(
         new QueryCommand({
           TableName: process.env.DYNAMODB_CHECKINS_TABLE,
           KeyConditionExpression: 'userId = :uid',
@@ -151,7 +157,7 @@ const awsImpl: DBService = {
 
   async saveGameInteraction(userId: string, data: GameInteractionData): Promise<void> {
     try {
-      await dynamoClient.send(
+      await getClient().send(
         new PutItemCommand({
           TableName: process.env.DYNAMODB_GAMES_TABLE,
           Item: marshall(data),
@@ -164,7 +170,7 @@ const awsImpl: DBService = {
 
   async getGameInteractions(userId: string): Promise<GameInteractionData[]> {
     try {
-      const result = await dynamoClient.send(
+      const result = await getClient().send(
         new QueryCommand({
           TableName: process.env.DYNAMODB_GAMES_TABLE,
           KeyConditionExpression: 'userId = :uid',
@@ -184,7 +190,7 @@ const awsImpl: DBService = {
 
   async saveCommunityInteraction(userId: string, data: CommunityInteractionData): Promise<void> {
     try {
-      await dynamoClient.send(
+      await getClient().send(
         new PutItemCommand({
           TableName: process.env.DYNAMODB_COMMUNITY_TABLE,
           Item: marshall(data),
@@ -197,7 +203,7 @@ const awsImpl: DBService = {
 
   async getCommunityInteractions(userId: string): Promise<CommunityInteractionData[]> {
     try {
-      const result = await dynamoClient.send(
+      const result = await getClient().send(
         new QueryCommand({
           TableName: process.env.DYNAMODB_COMMUNITY_TABLE,
           KeyConditionExpression: 'userId = :uid',

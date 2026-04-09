@@ -30,7 +30,13 @@ const localStub: AIService = {
 
 // ── AWS Bedrock implementation ───────────────────────────────────────────────
 
-const client = new BedrockRuntimeClient({ region: process.env.APP_AWS_REGION ?? process.env.AWS_REGION });
+let _client: BedrockRuntimeClient | null = null;
+function getClient() {
+  if (!_client) {
+    _client = new BedrockRuntimeClient({ region: process.env.APP_AWS_REGION ?? process.env.AWS_REGION });
+  }
+  return _client;
+}
 const MODEL_ID = process.env.BEDROCK_MODEL_ID ?? 'anthropic.claude-3-haiku-20240307-v1:0';
 
 const awsImpl: AIService = {
@@ -42,7 +48,7 @@ const awsImpl: AIService = {
         system: systemPrompt,
         messages: [{ role: 'user', content: userInput }],
       };
-      const response = await client.send(
+      const response = await getClient().send(
         new InvokeModelCommand({
           modelId: MODEL_ID,
           contentType: 'application/json',

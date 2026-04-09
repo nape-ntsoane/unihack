@@ -64,7 +64,13 @@ export class WellnessStack extends cdk.Stack {
     });
 
     amplifyRole.addToPolicy(new iam.PolicyStatement({
-      actions: ['cognito-idp:DescribeUserPool', 'cognito-idp:DescribeUserPoolClient'],
+      actions: [
+        'cognito-idp:DescribeUserPool',
+        'cognito-idp:DescribeUserPoolClient',
+        'cognito-idp:AdminCreateUser',
+        'cognito-idp:AdminSetUserPassword',
+        'cognito-idp:AdminGetUser'
+      ],
       resources: [userPool.userPoolArn],
     }));
 

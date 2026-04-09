@@ -1,16 +1,16 @@
 {
   "version": "53.0.0",
   "files": {
-    "1d09581e765fc55f4cd1308eb1ee23f1fd02bed7c2b513365566f863559fdd5b": {
+    "32889afde748ba46f11658db67a43a7ea3caabdfd8f226405ef050e0659f929a": {
       "displayName": "WellnessStack Template",
       "source": {
         "path": "WellnessStack.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "390402543342-us-east-1-6375d7ef": {
+        "390402543342-us-east-1-7b67a932": {
           "bucketName": "cdk-hnb659fds-assets-390402543342-us-east-1",
-          "objectKey": "1d09581e765fc55f4cd1308eb1ee23f1fd02bed7c2b513365566f863559fdd5b.json",
+          "objectKey": "32889afde748ba46f11658db67a43a7ea3caabdfd8f226405ef050e0659f929a.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::390402543342:role/cdk-hnb659fds-file-publishing-role-390402543342-us-east-1"
         }

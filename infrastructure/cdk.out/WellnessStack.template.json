@@ -227,6 +227,9 @@
      "Statement": [
       {
        "Action": [
+        "cognito-idp:AdminCreateUser",
+        "cognito-idp:AdminGetUser",
+        "cognito-idp:AdminSetUserPassword",
         "cognito-idp:DescribeUserPool",
         "cognito-idp:DescribeUserPoolClient"
        ],

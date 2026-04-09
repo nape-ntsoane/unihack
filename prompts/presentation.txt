@@ -10,5 +10,32 @@ problem
 Bedrock (Claude 3 Haiku): I will implement more aggressive token capping (max_tokens: 300) and context pruning (limiting the RAG injection to the most recent high-impact trends). Haiku is already the most efficient model, but these steps will maximize your credits.
 DynamoDB: I've verified that your infrastructure is set to PAY_PER_REQUEST, which scales to zero cost when not in use.
 
+### 🏗️ Technical Architecture & Cost Efficiency
 
-- seed url : 
+Serenity is built on a **100% Serverless AWS Stack**, ensuring that infrastructure costs scale to zero when not in use—a critical factor for a startup or hackathon project.
+
+#### 1. Core Stack
+*   **Framework**: Next.js 15 (App Router). Used for its "Serverless First" nature, allowing seamless deployment of API routes as AWS Lambda functions.
+*   **Aesthetics**: Tailwind CSS + Framer Motion. We prioritized "Rich Aesthetics" to create a premium, calm environment that distances itself from clinical-looking health apps.
+
+#### 2. AWS Infrastructure (managed via AWS CDK)
+*   **Amplify Hosting**: Handles the global CDN distribution and automated CI/CD pipeline. Every `git push` triggers a serverless build and deployment.
+*   **Amazon Cognito**: Manages user identity, registration, and secure JWT-based authentication. 
+    *   *Cost Benefit*: Cognito’s "Free Tier" is extremely generous (50k MAUs), making identity management effectively free for early-stage growth.
+*   **Amazon DynamoDB**: A NoSQL database used for storing user profiles, wellness check-ins, and game interactions.
+    *   *Cost Benefit*: We utilize "On-Demand" capacity, meaning you only pay for the specific read/write operations performed, with no monthly "idling" fee.
+*   **AWS Bedrock (Claude 3 Haiku)**: The "brain" behind the AI Wellness Synthesis and the Serenity Chat Guide.
+    *   *Cost Benefit*: We specifically chose the **Claude 3 Haiku** model. It is the most cost-efficient and fastest model in its class, providing near-instant responses at a fraction of the cost of larger models like Sonnet or Opus.
+
+#### 3. Technical Highlights for Presentation
+*   **RAG-Lite (Retrieval Augmented Generation)**: The Chat Guide isn't just a chatbot; it performs a "Learning Phase" on every session. It fetches the user's recent DynamoDB history (mood trends and kindness ripples) and injects it into the Bedrock prompt context. This creates a deeply personalized experience without the cost of fine-tuning a model.
+*   **Idempotent Seeding**: The project includes a custom administrative seeding engine that populates consistent demo data (check-ins, community ripples) across both local and production environments, ensuring a "perfect" demo every time.
+*   **Safe-Area Adaptability**: On the frontend, we implemented custom CSS environment variable handling (`safe-area-inset-bottom`) to ensure the platform feels like a native mobile app when pinned to an iPhone or Android home screen.
+
+### 💡 Why this wins on AWS
+By avoiding EC2 instances or RDS databases, Serenity has **zero fixed monthly costs**. The entire platform runs within the AWS Free Tier during development and early launch, only incurring costs as real users begin generating traffic.
+
+Good luck with the presentation—let's bring the "Serenity" to the judges! 🚀✨🕊️
+
+
+also include stats to show that we've done research

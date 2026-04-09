@@ -29,7 +29,6 @@ export default function RoomBuilderGame({ gameId, isActive, onGameEnd }: GameCom
   const [selected, setSelected] = useState<string | null>(null);
   const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
   const [done, setDone] = useState(false);
-  const [themeChosen, setThemeChosen] = useState("cozy");
   
   const startTime = useRef(Date.now());
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -68,25 +67,21 @@ export default function RoomBuilderGame({ gameId, isActive, onGameEnd }: GameCom
         }, {} as Record<string, number>),
         timePerObject: finalPlaced.map((p, i) => i === 0 ? p.placedAt - startTime.current : p.placedAt - finalPlaced[i-1].placedAt),
         layoutComplexity: finalPlaced.length * 1.5,
-        themeChosen: themeChosen
       }
     };
 
-    // AWS API Push
     try {
       await fetch('/api/game-result', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(gameResult)
       });
-      console.log("AWS: Game Result successfully synced");
     } catch (e) {
-      console.error("AWS Sync Error", e);
+      console.error("Game sync error", e);
     }
 
-    // Call TikTok feed parent
     onGameEnd(gameResult);
-  }, [done, themeChosen, onGameEnd]);
+  }, [done, onGameEnd]);
 
   useEffect(() => {
     if (!isActive) {
@@ -164,12 +159,11 @@ export default function RoomBuilderGame({ gameId, isActive, onGameEnd }: GameCom
         </div>
       </div>
 
-      {/* 3D Scene */}
-      <div className="flex-1 w-full relative overflow-hidden bg-gradient-to-br from-indigo-900 via-sky-900 to-blue-900 rounded-3xl shrink-0">
+      {/* Room Scene */}
+      <div className="flex-1 w-full relative overflow-hidden rounded-3xl shrink-0">
          {isActive && (
            <RoomScene 
              items={placed}
-             themeChosen={themeChosen}
              onUpdateDrag={handleUpdateItem}
              onDrop={playDropSound}
            />

@@ -34,7 +34,7 @@ export function BottomNav() {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 w-full z-[100] bg-[#1A0A14] border-t border-white/10 safe-area-bottom rounded-none shadow-none">
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[460px] z-[100] bg-[#1A0A14] border-t border-white/10 safe-area-bottom rounded-none shadow-none">
       {/* Account Menu Popover */}
       {showAccountMenu && (
         <div className="absolute bottom-[calc(100%+8px)] left-4 right-4 glass-card p-2 animate-scale-in mb-2 shadow-2xl">

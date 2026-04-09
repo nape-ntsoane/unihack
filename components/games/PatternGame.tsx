@@ -12,7 +12,7 @@ const fadeScaleVariant: Variants = {
 };
 
 const SHAPES = ["●", "■", "▲", "◆", "★"];
-const COLORS = ["#f87171", "#60a5fa", "#34d399", "#fbbf24", "#a78bfa", "#f472b6"];
+const COLORS = ["#5eead4", "#a78bfa", "#6ee7b7", "#fcd34d", "#c4b5fd", "#fb923c"];
 const ROUNDS = 5;
 
 function generatePuzzle(difficulty: number) {
@@ -169,7 +169,7 @@ export default function PatternGame({ gameId, isActive, onGameEnd }: GameCompone
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className={`text-lg font-semibold ${feedback === "correct" ? "text-green-300" : "text-red-300"}`}
+            className={`text-lg font-semibold ${feedback === "correct" ? "text-teal-300" : "text-rose-300"}`}
           >
             {feedback === "correct" ? "Spot on! ✓" : "Missed it ✗"}
           </motion.p>
@@ -177,7 +177,7 @@ export default function PatternGame({ gameId, isActive, onGameEnd }: GameCompone
       </AnimatePresence>
 
       <motion.p key={`score-${score}`} animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 0.2 }}
-        className="text-white/50 text-sm tabular-nums">
+        className="text-white/40 text-sm tabular-nums">
         Score: {score}
       </motion.p>
     </div>

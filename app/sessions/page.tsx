@@ -6,9 +6,49 @@ import { PrimaryTherapistCard } from "@/components/sessions/PrimaryTherapistCard
 import { TherapistCard } from "@/components/sessions/TherapistCard";
 import { ChatPreview } from "@/components/sessions/ChatPreview";
 import { TherapistModal } from "@/components/sessions/TherapistModal";
+import { EmergencyCallModal } from "@/components/sessions/EmergencyCallModal";
+import { ScoreFlagModal } from "@/components/sessions/ScoreFlagModal";
 import type { Therapist } from "@/types";
 import { motion, AnimatePresence } from "framer-motion";
-import { Stethoscope, Search, Sparkles } from "lucide-react";
+import { Stethoscope, Search, Sparkles, Phone } from "lucide-react";
+
+const PUBLIC_EMERGENCY_CONTACTS = [
+  {
+    label: "988 Suicide & Crisis Lifeline",
+    number: "988",
+    description: "24/7 call or text — free & confidential",
+    emoji: "🆘",
+    isText: false,
+  },
+  {
+    label: "Crisis Text Line",
+    number: "741741",
+    description: "Text HOME — available 24/7",
+    emoji: "💬",
+    isText: true,
+  },
+  {
+    label: "SAMHSA National Helpline",
+    number: "1-800-662-4357",
+    description: "Mental health & substance use support",
+    emoji: "🧠",
+    isText: false,
+  },
+  {
+    label: "National Domestic Violence Hotline",
+    number: "1-800-799-7233",
+    description: "Safe, confidential support 24/7",
+    emoji: "🏠",
+    isText: false,
+  },
+  {
+    label: "Emergency Services",
+    number: "911",
+    description: "Immediate danger — call right away",
+    emoji: "🚨",
+    isText: false,
+  },
+];
 
 const MOCK_THERAPISTS: Therapist[] = [
   {
@@ -45,6 +85,8 @@ export default function SessionsPage() {
   const [primaryTherapistId, setPrimaryTherapistId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pendingTherapist, setPendingTherapist] = useState<Therapist | null>(null);
+  const [isEmergencyOpen, setIsEmergencyOpen] = useState(false);
+  const [scoreFlagData, setScoreFlagData] = useState<{ score: number; gameType?: string } | null>(null);
 
   useEffect(() => {
     const savedId = localStorage.getItem("primary_therapist_id");
@@ -79,9 +121,22 @@ export default function SessionsPage() {
   const primaryTherapist = MOCK_THERAPISTS.find(t => t.id === primaryTherapistId);
   const currentTherapistName = MOCK_THERAPISTS.find(t => t.id === primaryTherapistId)?.name || "your therapist";
 
+  const handleFlagTherapist = async () => {
+    if (!scoreFlagData || !primaryTherapistId) return;
+    // Mock API call for flagship
+    console.log("🚀 Flagging score to therapist:", {
+        therapistId: primaryTherapistId,
+        score: scoreFlagData.score,
+        gameType: scoreFlagData.gameType,
+        type: "score_flag",
+    });
+    // In production, this would be:
+    // await fetch("/api/alert", { ... });
+  };
+
   return (
     <Layout>
-      <div className="space-y-10 max-w-lg mx-auto pb-40">
+      <div className="space-y-10 w-full max-w-[420px] mx-auto pb-40">
         <header className="space-y-6 pt-10 px-2 text-center">
           <div className="mx-auto w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center text-[var(--primary)] border border-rose-500/10 mb-4 animate-float">
             <Stethoscope size={24} strokeWidth={1.5} />
@@ -91,7 +146,7 @@ export default function SessionsPage() {
             <p className="text-sm text-[var(--text-muted)] font-medium">Connect with verified mindfulness guides</p>
           </div>
           
-          <div className="flex bg-white/[0.04] p-1 rounded-2xl border border-white/5 w-full">
+          <div className="flex bg-white/[0.04] p-1 rounded-2xl border border-white/5 w-full max-w-[420px] mx-auto">
             <button
               onClick={() => setActiveTab("your-space")}
               className={`flex-1 py-3 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all ${
@@ -124,7 +179,8 @@ export default function SessionsPage() {
                 <>
                   <PrimaryTherapistCard 
                     therapist={primaryTherapist} 
-                    onBook={() => alert("Booking functionality coming soon! 📅")} 
+                    onBook={() => alert("Booking functionality coming soon! 📅")}
+                    onEmergency={() => setIsEmergencyOpen(true)}
                   />
                   
                   <section className="space-y-4">
@@ -144,6 +200,23 @@ export default function SessionsPage() {
                       isUnread={false}
                       onClick={() => {}}
                     />
+                  </section>
+
+                  <section className="space-y-3 px-1">
+                    <div className="flex items-center gap-2 px-1">
+                      <Sparkles size={14} className="text-amber-400" />
+                      <h2 className="label-caps text-amber-400/80">Score Alerts</h2>
+                    </div>
+                    <button
+                      onClick={() => setScoreFlagData({ score: 32, gameType: "Tap Game" })}
+                      className="w-full flex items-center justify-between p-4 rounded-2xl bg-amber-500/[0.06] border border-amber-500/20 hover:bg-amber-500/10 transition-all active:scale-[0.98]"
+                    >
+                      <div className="text-left">
+                        <p className="text-sm font-bold text-[var(--text-primary)]">Tap Game — Score 32</p>
+                        <p className="text-xs text-[var(--text-muted)] mt-0.5">Flag this score to your therapist</p>
+                      </div>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400 border border-amber-500/30 rounded-xl px-3 py-1.5">Flag</span>
+                    </button>
                   </section>
                 </>
               ) : (
@@ -184,6 +257,33 @@ export default function SessionsPage() {
                   onConnect={() => handleConnect(therapist)} 
                 />
               ))}
+
+              {/* Public Emergency Contacts */}
+              <div className="space-y-3 pt-2">
+                <div className="flex items-center gap-2 px-1">
+                  <Phone size={13} className="text-red-400" />
+                  <h2 className="label-caps text-red-400/80">Emergency Contacts</h2>
+                </div>
+                {PUBLIC_EMERGENCY_CONTACTS.map((contact) => (
+                  <a
+                    key={contact.number}
+                    href={contact.isText ? `sms:${contact.number}` : `tel:${contact.number}`}
+                    className="flex items-center gap-4 p-4 rounded-2xl bg-red-500/[0.05] border border-red-500/15 hover:bg-red-500/10 transition-all active:scale-[0.98] w-full max-w-[420px] mx-auto"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center shrink-0 text-lg">
+                      {contact.emoji}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-[var(--text-primary)] truncate">{contact.label}</p>
+                      <p className="text-xs text-[var(--text-muted)] mt-0.5">{contact.description}</p>
+                    </div>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <span className="text-[10px] font-black text-red-400 tracking-wider">{contact.number}</span>
+                      <Phone size={13} className="text-red-400" />
+                    </div>
+                  </a>
+                ))}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -195,6 +295,23 @@ export default function SessionsPage() {
           onContinue={() => setIsModalOpen(false)}
           onExplore={confirmSwitch}
           onClose={() => setIsModalOpen(false)}
+        />
+      )}
+
+      <EmergencyCallModal
+        isOpen={isEmergencyOpen}
+        onClose={() => setIsEmergencyOpen(false)}
+        therapistName={primaryTherapist?.name}
+      />
+
+      {scoreFlagData && primaryTherapist && (
+        <ScoreFlagModal
+          isOpen={!!scoreFlagData}
+          onClose={() => setScoreFlagData(null)}
+          therapistName={primaryTherapist.name}
+          score={scoreFlagData.score}
+          gameType={scoreFlagData.gameType}
+          onFlag={handleFlagTherapist}
         />
       )}
     </Layout>

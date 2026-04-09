@@ -11,4 +11,4 @@ Bedrock (Claude 3 Haiku): I will implement more aggressive token capping (max_to
 DynamoDB: I've verified that your infrastructure is set to PAY_PER_REQUEST, which scales to zero cost when not in use.
 
 
-- seed url : /api/admin/seed?key=unihack-serenity-2026
+- seed url : 

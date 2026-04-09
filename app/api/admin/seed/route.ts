@@ -18,10 +18,6 @@ const DEMO_EMAIL = "demo@serenity.ac.za";
 const DEMO_PASSWORD = "Serenity2026!";
 const SECRET_KEY = process.env.ADMIN_SECRET_KEY || "unihack-serenity-2026";
 
-const cognito = new CognitoIdentityProviderClient({
-  region: process.env.APP_AWS_REGION || process.env.AWS_REGION
-});
-
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const key = searchParams.get("key");
@@ -29,6 +25,10 @@ export async function GET(req: NextRequest) {
   if (key !== SECRET_KEY) {
     return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
   }
+
+  // 0. Lazy Client Initialization
+  const region = process.env.APP_AWS_REGION || process.env.AWS_REGION || "af-south-1";
+  const cognito = new CognitoIdentityProviderClient({ region });
 
   let userId = searchParams.get("userId");
 

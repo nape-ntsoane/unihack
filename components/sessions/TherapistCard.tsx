@@ -10,7 +10,7 @@ interface TherapistCardProps {
 
 export function TherapistCard({ therapist, onConnect }: TherapistCardProps) {
   return (
-    <div className="glass-card p-6 flex flex-col gap-4 bg-white/[0.03] border-white/10 hover:translate-y-[-4px] transition-all duration-300">
+    <div className="w-full max-w-[380px] mx-auto p-4 sm:p-6 glass-card flex flex-col gap-4 bg-white/[0.03] border-white/10 hover:translate-y-[-4px] transition-all duration-300 overflow-hidden">
       <div className="flex items-start gap-4">
         <div className="w-16 h-16 rounded-2xl bg-[var(--surface-raised)] flex items-center justify-center text-3xl shrink-0 border border-white/10 shadow-lg animate-float">
           {therapist.avatar}

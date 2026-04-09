@@ -173,7 +173,7 @@ export default function ColorContrastGame({ gameId, isActive, onGameEnd }: GameC
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className={`text-lg font-semibold ${feedback === "correct" ? "text-green-300" : "text-red-300"}`}
+            className={`text-lg font-semibold ${feedback === "correct" ? "text-teal-300" : "text-rose-300"}`}
           >
             {feedback === "correct" ? "Nice eye! ✓" : "Not quite ✗"}
           </motion.p>
@@ -184,7 +184,7 @@ export default function ColorContrastGame({ gameId, isActive, onGameEnd }: GameC
         key={`score-${score}`}
         animate={{ scale: [1, 1.2, 1] }}
         transition={{ duration: 0.25 }}
-        className="text-white/50 text-sm tabular-nums"
+        className="text-white/40 text-sm tabular-nums"
       >
         Score: {score}
       </motion.p>

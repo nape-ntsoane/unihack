@@ -21,20 +21,52 @@ export interface CheckinData {
 export interface GameInteractionData {
   userId: string;
   timestamp: string;
-  gameType?: string;
-  gameId?: string;
+  gameId: string;
   score: number;
   duration?: number;
+  accuracy?: number;
+  reactionTime?: number;
   metrics?: Record<string, unknown>;
 }
 
 export interface CommunityInteractionData {
   userId: string;
   timestamp: string;
-  messageType?: string;
   type?: "kindness" | "support" | "reflection";
   content?: string;
-  recipientId?: string;
+}
+
+export interface GameConfig {
+  id: string;
+  title: string;
+  instruction: string;
+  gradient: string;
+  plays: string;
+}
+
+export interface GameResult {
+  gameId: string;
+  timestamp: string;
+  score?: number;
+  accuracy?: number;
+  reactionTime?: number;
+  customMetrics?: Record<string, unknown>;
+}
+
+export interface Therapist {
+  id: string;
+  name: string;
+  description: string;
+  specialization: string;
+  personalityStyle: string;
+  isVerified: boolean;
+  avatar: string;
+}
+
+export interface GameComponentProps {
+  gameId: string;
+  isActive: boolean;
+  onGameEnd: (result: GameResult) => void;
 }
 
 export interface AnalyzeResponse {

@@ -6,11 +6,11 @@ import { CheckinTrigger } from "@/components/checkin/CheckinTrigger";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({ children, hideNav }: { children: React.ReactNode; hideNav?: boolean }) {
   const { user } = useAuth();
   const pathname = usePathname();
 
-  const isFullscreen = pathname === "/games" || pathname === "/chat";
+  const isFullscreen = hideNav || pathname === "/chat";
 
   return (
     <div className="min-h-screen relative overflow-x-hidden flex flex-col pt-safe-top">

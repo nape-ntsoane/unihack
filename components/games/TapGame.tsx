@@ -99,7 +99,7 @@ export default function TapGame({ gameId, isActive, onGameEnd }: GameComponentPr
       {impacts.map((imp) => (
         <motion.div
           key={imp.id}
-          className="absolute rounded-full border-2 border-yellow-300/70 pointer-events-none"
+          className="absolute rounded-full border-2 border-teal-300/60 pointer-events-none"
           style={{ left: `${imp.x}%`, top: `${imp.y}%`, width: 8, height: 8, marginLeft: -4, marginTop: -4 }}
           initial={{ scale: 1, opacity: 0.9 }}
           animate={{ scale: 8, opacity: 0 }}
@@ -150,12 +150,13 @@ export default function TapGame({ gameId, isActive, onGameEnd }: GameComponentPr
             animate={{
               scale: [0, 1.2, 1],
               opacity: 1,
-              boxShadow: ["0 0 0px rgba(250,204,21,0)", "0 0 24px rgba(250,204,21,0.8)", "0 0 12px rgba(250,204,21,0.5)"],
+              boxShadow: ["0 0 0px rgba(94,234,212,0)", "0 0 28px rgba(94,234,212,0.7)", "0 0 14px rgba(94,234,212,0.4)"],
             }}
             exit={{ scale: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="w-full h-full rounded-full bg-yellow-400 flex items-center justify-center shadow-lg shadow-yellow-400/60">
+          <div className="w-full h-full rounded-full flex items-center justify-center shadow-lg"
+              style={{ background: "linear-gradient(135deg, #0f766e, #6d28d9)", boxShadow: "0 0 20px rgba(94,234,212,0.4)" }}>
               <span>👆</span>
             </div>
           </motion.button>
@@ -171,7 +172,7 @@ export default function TapGame({ gameId, isActive, onGameEnd }: GameComponentPr
             initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
           >
-            <p className={`text-2xl font-bold ${(currentTime ?? 999) < 250 ? "text-green-300" : (currentTime ?? 999) < 450 ? "text-yellow-300" : "text-white"}`}>
+            <p className={`text-2xl font-bold ${(currentTime ?? 999) < 250 ? "text-teal-300" : (currentTime ?? 999) < 450 ? "text-violet-300" : "text-white/70"}`}>
               {currentTime}ms
             </p>
             {streak >= 2 && (
@@ -180,7 +181,7 @@ export default function TapGame({ gameId, isActive, onGameEnd }: GameComponentPr
                 initial={{ scale: 0 }} animate={{ scale: [0, 1.3, 1] }}
                 transition={{ type: "spring", stiffness: 500 }}
               >
-                🔥 {streak}x streak!
+                ✨ {streak}x streak!
               </motion.p>
             )}
           </motion.div>
@@ -207,7 +208,7 @@ export default function TapGame({ gameId, isActive, onGameEnd }: GameComponentPr
           {Array.from({ length: ROUNDS }).map((_, i) => (
             <motion.div
               key={`idx-${i}`}
-              className={`w-2 h-2 rounded-full ${i < round ? "bg-yellow-400" : "bg-white/20"}`}
+              className={`w-2 h-2 rounded-full ${i < round ? "bg-teal-400" : "bg-white/20"}`}
               animate={i === round - 1 ? { scale: [1, 1.5, 1] } : {}}
               transition={{ duration: 0.3 }}
             />

@@ -2,20 +2,21 @@
 
 import type { Therapist } from "@/types";
 import Link from "next/link";
-import { MessageCircle, Calendar, ShieldCheck } from "lucide-react";
+import { MessageCircle, Calendar, ShieldCheck, Phone } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface PrimaryTherapistCardProps {
   therapist: Therapist;
   onBook: () => void;
+  onEmergency: () => void;
 }
 
-export function PrimaryTherapistCard({ therapist, onBook }: PrimaryTherapistCardProps) {
+export function PrimaryTherapistCard({ therapist, onBook, onEmergency }: PrimaryTherapistCardProps) {
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="p-6 sm:p-8 glass-card bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] border-white/10 shadow-2xl overflow-hidden relative w-full"
+      className="w-full p-5 sm:p-8 glass-card bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] border-white/10 shadow-2xl overflow-hidden relative"
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/5 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2" />
       
@@ -56,6 +57,14 @@ export function PrimaryTherapistCard({ therapist, onBook }: PrimaryTherapistCard
           <span className="text-[10px] font-bold uppercase tracking-widest">Book Lab</span>
         </button>
       </div>
+
+      <button
+        onClick={onEmergency}
+        className="w-full mt-4 flex items-center justify-center gap-2 py-4 rounded-[24px] bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 transition-all active:scale-[0.98] text-red-400 relative z-10"
+      >
+        <Phone size={16} strokeWidth={2} />
+        <span className="text-[10px] font-bold uppercase tracking-widest">Emergency Call</span>
+      </button>
     </motion.div>
   );
 }

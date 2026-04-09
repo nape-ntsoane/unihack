@@ -16,6 +16,38 @@ interface Props {
   }>;
 }
 
+// Animated mesh gradient background — calm, muted, consistent
+function MeshBackground({ gradient, isActive }: { gradient: string; isActive: boolean }) {
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      {/* Base gradient */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`} />
+
+      {/* Soft teal orb top-left */}
+      <motion.div
+        className="absolute w-[65%] h-[65%] rounded-full"
+        style={{ top: "-15%", left: "-10%", filter: "blur(90px)", background: "rgba(94,234,212,0.07)" }}
+        animate={isActive ? { x: [0, 25, -15, 0], y: [0, -18, 12, 0], scale: [1, 1.15, 0.92, 1] } : {}}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+      />
+      {/* Soft lavender orb bottom-right */}
+      <motion.div
+        className="absolute w-[45%] h-[45%] rounded-full"
+        style={{ bottom: "5%", right: "-8%", filter: "blur(80px)", background: "rgba(167,139,250,0.07)" }}
+        animate={isActive ? { x: [0, -20, 12, 0], y: [0, 18, -10, 0], scale: [1, 0.88, 1.12, 1] } : {}}
+        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+      />
+
+      {/* Subtle noise */}
+      <div className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`, backgroundSize: "200px 200px" }} />
+
+      {/* Vignette */}
+      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.55) 100%)" }} />
+    </div>
+  );
+}
+
 export default function GameSlide({ config, isActive, GameComponent }: Props) {
   const [result, setResult] = useState<GameResult | null>(null);
   const [key, setKey] = useState(0);
@@ -32,47 +64,28 @@ export default function GameSlide({ config, isActive, GameComponent }: Props) {
   }, []);
 
   return (
-    <section
-      className="relative w-full h-full snap-start overflow-hidden"
-    >
-      {/* Gradient background */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${config.gradient}`} />
-
-      {/* Animated ambient orb */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={isActive ? {
-          background: [
-            "radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.06) 0%, transparent 60%)",
-            "radial-gradient(ellipse at 70% 70%, rgba(255,255,255,0.06) 0%, transparent 60%)",
-            "radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.06) 0%, transparent 60%)",
-          ]
-        } : {}}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      {/* Noise texture */}
-      <div className="absolute inset-0 opacity-[0.06] pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzMDAiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMSIvPjwvc3ZnPg==')]" />
+    <section className="relative w-full h-full snap-start overflow-hidden">
+      <MeshBackground gradient={config.gradient} isActive={isActive} />
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col h-full px-5 pt-20 pb-12">
-        {/* Header — slides in when active */}
+      <div className="relative z-10 flex flex-col h-full px-5 pt-16 pb-10">
+        {/* Header */}
         <motion.div
-          className="mb-8"
-          initial={{ opacity: 0, y: -16 }}
-          animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: -16 }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+          className="mb-6"
+          initial={{ opacity: 0, y: -20 }}
+          animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
         >
-          <h2 className="text-white text-3xl font-black tracking-tight">{config.title}</h2>
-          <p className="text-white/55 text-sm mt-1.5 font-medium leading-relaxed max-w-[80%]">{config.instruction}</p>
+          <h2 className="text-white text-3xl font-black tracking-tight leading-tight">{config.title}</h2>
+          <p className="text-white/50 text-sm mt-1.5 font-medium leading-relaxed max-w-[80%]">{config.instruction}</p>
         </motion.div>
 
         {/* Game area */}
         <motion.div
           className="flex-1 flex items-center justify-center"
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={isActive ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.96 }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+          initial={{ opacity: 0, scale: 0.94, y: 16 }}
+          animate={isActive ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.94, y: 16 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
         >
           <div className="w-full h-full flex items-center justify-center">
             <GameComponent

@@ -67,6 +67,61 @@ module.exports = require("next/dist/server/app-render/work-unit-async-storage.ex
 
 /***/ }),
 
+/***/ "buffer":
+/*!*************************!*\
+  !*** external "buffer" ***!
+  \*************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("buffer");
+
+/***/ }),
+
+/***/ "crypto":
+/*!*************************!*\
+  !*** external "crypto" ***!
+  \*************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("crypto");
+
+/***/ }),
+
+/***/ "fs/promises":
+/*!******************************!*\
+  !*** external "fs/promises" ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("fs/promises");
+
+/***/ }),
+
+/***/ "http":
+/*!***********************!*\
+  !*** external "http" ***!
+  \***********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("http");
+
+/***/ }),
+
+/***/ "os":
+/*!*********************!*\
+  !*** external "os" ***!
+  \*********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("os");
+
+/***/ }),
+
 /***/ "path":
 /*!***********************!*\
   !*** external "path" ***!
@@ -75,6 +130,160 @@ module.exports = require("next/dist/server/app-render/work-unit-async-storage.ex
 
 "use strict";
 module.exports = require("path");
+
+/***/ }),
+
+/***/ "stream":
+/*!*************************!*\
+  !*** external "stream" ***!
+  \*************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("stream");
+
+/***/ }),
+
+/***/ "url":
+/*!**********************!*\
+  !*** external "url" ***!
+  \**********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("url");
+
+/***/ }),
+
+/***/ "node:async_hooks":
+/*!***********************************!*\
+  !*** external "node:async_hooks" ***!
+  \***********************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:async_hooks");
+
+/***/ }),
+
+/***/ "node:child_process":
+/*!*************************************!*\
+  !*** external "node:child_process" ***!
+  \*************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:child_process");
+
+/***/ }),
+
+/***/ "node:crypto":
+/*!******************************!*\
+  !*** external "node:crypto" ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:crypto");
+
+/***/ }),
+
+/***/ "node:fs":
+/*!**************************!*\
+  !*** external "node:fs" ***!
+  \**************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:fs");
+
+/***/ }),
+
+/***/ "node:fs/promises":
+/*!***********************************!*\
+  !*** external "node:fs/promises" ***!
+  \***********************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:fs/promises");
+
+/***/ }),
+
+/***/ "node:http":
+/*!****************************!*\
+  !*** external "node:http" ***!
+  \****************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:http");
+
+/***/ }),
+
+/***/ "node:https":
+/*!*****************************!*\
+  !*** external "node:https" ***!
+  \*****************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:https");
+
+/***/ }),
+
+/***/ "node:os":
+/*!**************************!*\
+  !*** external "node:os" ***!
+  \**************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:os");
+
+/***/ }),
+
+/***/ "node:path":
+/*!****************************!*\
+  !*** external "node:path" ***!
+  \****************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:path");
+
+/***/ }),
+
+/***/ "node:process":
+/*!*******************************!*\
+  !*** external "node:process" ***!
+  \*******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:process");
+
+/***/ }),
+
+/***/ "node:stream":
+/*!******************************!*\
+  !*** external "node:stream" ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:stream");
+
+/***/ }),
+
+/***/ "node:util":
+/*!****************************!*\
+  !*** external "node:util" ***!
+  \****************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:util");
 
 /***/ }),
 
@@ -169,7 +378,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   authenticateUser: () => (/* binding */ authenticateUser),\n/* harmony export */   getMockUser: () => (/* binding */ getMockUser)\n/* harmony export */ });\nconst MOCK_USER = {\n    id: \"usr_001\",\n    email: \"test@example.com\",\n    name: \"Test User\"\n};\nconst MOCK_PASSWORD = \"password123\";\n/**\n * Mock auth service — replace with AWS Cognito / real auth provider later.\n */ async function authenticateUser(email, password) {\n    // Allow any email/password for mock purposes during the hackathon\n    return {\n        user: {\n            id: \"usr_\" + Math.random().toString(36).substring(2, 11),\n            email,\n            name: email.split(\"@\")[0] || \"Explorer\"\n        }\n    };\n}\nfunction getMockUser() {\n    return MOCK_USER;\n}\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHNzcikvLi9saWIvc2VydmljZXMvYXV0aC50cyIsIm1hcHBpbmdzIjoiOzs7OztBQUVBLE1BQU1BLFlBQWtCO0lBQ3RCQyxJQUFJO0lBQ0pDLE9BQU87SUFDUEMsTUFBTTtBQUNSO0FBRUEsTUFBTUMsZ0JBQWdCO0FBRXRCOztDQUVDLEdBQ00sZUFBZUMsaUJBQ3BCSCxLQUFhLEVBQ2JJLFFBQWdCO0lBRWhCLGtFQUFrRTtJQUNsRSxPQUFPO1FBQ0xDLE1BQU07WUFDSk4sSUFBSSxTQUFTTyxLQUFLQyxNQUFNLEdBQUdDLFFBQVEsQ0FBQyxJQUFJQyxTQUFTLENBQUMsR0FBRztZQUNyRFQ7WUFDQUMsTUFBTUQsTUFBTVUsS0FBSyxDQUFDLElBQUksQ0FBQyxFQUFFLElBQUk7UUFDL0I7SUFDRjtBQUNGO0FBRU8sU0FBU0M7SUFDZCxPQUFPYjtBQUNUIiwic291cmNlcyI6WyIvaG9tZS9uYXBlL0RldmxhYi9IYWNrYXRob25zL1VuaUhhY2svZmluYWwtZmluYWwvdW5paGFjay1wcm9qZWN0L2xpYi9zZXJ2aWNlcy9hdXRoLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB0eXBlIHsgVXNlciB9IGZyb20gXCJAL3R5cGVzXCI7XG5cbmNvbnN0IE1PQ0tfVVNFUjogVXNlciA9IHtcbiAgaWQ6IFwidXNyXzAwMVwiLFxuICBlbWFpbDogXCJ0ZXN0QGV4YW1wbGUuY29tXCIsXG4gIG5hbWU6IFwiVGVzdCBVc2VyXCIsXG59O1xuXG5jb25zdCBNT0NLX1BBU1NXT1JEID0gXCJwYXNzd29yZDEyM1wiO1xuXG4vKipcbiAqIE1vY2sgYXV0aCBzZXJ2aWNlIOKAlCByZXBsYWNlIHdpdGggQVdTIENvZ25pdG8gLyByZWFsIGF1dGggcHJvdmlkZXIgbGF0ZXIuXG4gKi9cbmV4cG9ydCBhc3luYyBmdW5jdGlvbiBhdXRoZW50aWNhdGVVc2VyKFxuICBlbWFpbDogc3RyaW5nLFxuICBwYXNzd29yZDogc3RyaW5nXG4pOiBQcm9taXNlPHsgdXNlcjogVXNlciB9IHwgeyBlcnJvcjogc3RyaW5nIH0+IHtcbiAgLy8gQWxsb3cgYW55IGVtYWlsL3Bhc3N3b3JkIGZvciBtb2NrIHB1cnBvc2VzIGR1cmluZyB0aGUgaGFja2F0aG9uXG4gIHJldHVybiB7XG4gICAgdXNlcjoge1xuICAgICAgaWQ6IFwidXNyX1wiICsgTWF0aC5yYW5kb20oKS50b1N0cmluZygzNikuc3Vic3RyaW5nKDIsIDExKSxcbiAgICAgIGVtYWlsLFxuICAgICAgbmFtZTogZW1haWwuc3BsaXQoXCJAXCIpWzBdIHx8IFwiRXhwbG9yZXJcIixcbiAgICB9LFxuICB9O1xufVxuXG5leHBvcnQgZnVuY3Rpb24gZ2V0TW9ja1VzZXIoKTogVXNlciB7XG4gIHJldHVybiBNT0NLX1VTRVI7XG59XG4iXSwibmFtZXMiOlsiTU9DS19VU0VSIiwiaWQiLCJlbWFpbCIsIm5hbWUiLCJNT0NLX1BBU1NXT1JEIiwiYXV0aGVudGljYXRlVXNlciIsInBhc3N3b3JkIiwidXNlciIsIk1hdGgiLCJyYW5kb20iLCJ0b1N0cmluZyIsInN1YnN0cmluZyIsInNwbGl0IiwiZ2V0TW9ja1VzZXIiXSwiaWdub3JlTGlzdCI6W10sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///(ssr)/./lib/services/auth.ts\n");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   signIn: () => (/* binding */ signIn),\n/* harmony export */   signOut: () => (/* binding */ signOut),\n/* harmony export */   signUp: () => (/* binding */ signUp),\n/* harmony export */   verifyToken: () => (/* binding */ verifyToken)\n/* harmony export */ });\n/* harmony import */ var _aws_sdk_client_cognito_identity_provider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @aws-sdk/client-cognito-identity-provider */ \"(ssr)/./node_modules/@aws-sdk/client-cognito-identity-provider/dist-es/CognitoIdentityProviderClient.js\");\n/* harmony import */ var _aws_sdk_client_cognito_identity_provider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @aws-sdk/client-cognito-identity-provider */ \"(ssr)/./node_modules/@aws-sdk/client-cognito-identity-provider/dist-es/commands/SignUpCommand.js\");\n/* harmony import */ var _aws_sdk_client_cognito_identity_provider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @aws-sdk/client-cognito-identity-provider */ \"(ssr)/./node_modules/@aws-sdk/client-cognito-identity-provider/dist-es/commands/InitiateAuthCommand.js\");\n/* harmony import */ var _aws_sdk_client_cognito_identity_provider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @aws-sdk/client-cognito-identity-provider */ \"(ssr)/./node_modules/@aws-sdk/client-cognito-identity-provider/dist-es/commands/GlobalSignOutCommand.js\");\n\nconst isLocal = (process.env.APP_ENV ?? 'local') !== 'production';\nconst localStub = {\n    async signUp (email, _password) {\n        return {\n            userId: `local-${email}`\n        };\n    },\n    async signIn (email, _password) {\n        const payload = {\n            sub: `local-${email}`,\n            email,\n            exp: 9999999999\n        };\n        const fakeToken = Buffer.from(JSON.stringify(payload)).toString('base64');\n        return {\n            accessToken: fakeToken,\n            idToken: fakeToken\n        };\n    },\n    async verifyToken (token) {\n        const decoded = JSON.parse(Buffer.from(token, 'base64').toString('utf-8'));\n        return decoded;\n    },\n    async signOut (_accessToken) {\n    // no-op\n    }\n};\nconst awsImpl = {\n    async signUp (email, password) {\n        try {\n            const client = new _aws_sdk_client_cognito_identity_provider__WEBPACK_IMPORTED_MODULE_0__.CognitoIdentityProviderClient({\n                region: process.env.AWS_REGION\n            });\n            const response = await client.send(new _aws_sdk_client_cognito_identity_provider__WEBPACK_IMPORTED_MODULE_1__.SignUpCommand({\n                ClientId: process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID,\n                Username: email,\n                Password: password\n            }));\n            return {\n                userId: response.UserSub\n            };\n        } catch (err) {\n            throw new Error(`signUp failed: ${err.message}`);\n        }\n    },\n    async signIn (email, password) {\n        try {\n            const client = new _aws_sdk_client_cognito_identity_provider__WEBPACK_IMPORTED_MODULE_0__.CognitoIdentityProviderClient({\n                region: process.env.AWS_REGION\n            });\n            const response = await client.send(new _aws_sdk_client_cognito_identity_provider__WEBPACK_IMPORTED_MODULE_2__.InitiateAuthCommand({\n                AuthFlow: 'USER_PASSWORD_AUTH',\n                ClientId: process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID,\n                AuthParameters: {\n                    USERNAME: email,\n                    PASSWORD: password\n                }\n            }));\n            const result = response.AuthenticationResult;\n            return {\n                accessToken: result.AccessToken,\n                idToken: result.IdToken\n            };\n        } catch (err) {\n            throw new Error(`signIn failed: ${err.message}`);\n        }\n    },\n    async verifyToken (token) {\n        try {\n            const segments = token.split('.');\n            const payload = segments[1].replace(/-/g, '+').replace(/_/g, '/');\n            const decoded = JSON.parse(Buffer.from(payload, 'base64').toString('utf-8'));\n            if (decoded.exp <= Date.now() / 1000) {\n                throw new Error('Token has expired');\n            }\n            return decoded;\n        } catch (err) {\n            throw new Error(`verifyToken failed: ${err.message}`);\n        }\n    },\n    async signOut (accessToken) {\n        try {\n            const client = new _aws_sdk_client_cognito_identity_provider__WEBPACK_IMPORTED_MODULE_0__.CognitoIdentityProviderClient({\n                region: process.env.AWS_REGION\n            });\n            await client.send(new _aws_sdk_client_cognito_identity_provider__WEBPACK_IMPORTED_MODULE_3__.GlobalSignOutCommand({\n                AccessToken: accessToken\n            }));\n        } catch (err) {\n            throw new Error(`signOut failed: ${err.message}`);\n        }\n    }\n};\nconst { signUp, signIn, verifyToken, signOut } = isLocal ? localStub : awsImpl;\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,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WUFDbEI7WUFDQSxPQUFPakI7UUFDVCxFQUFFLE9BQU9nQixLQUFLO1lBQ1osTUFBTSxJQUFJQyxNQUFNLENBQUMsb0JBQW9CLEVBQUUsSUFBZUMsT0FBTyxFQUFFO1FBQ2pFO0lBQ0Y7SUFFQSxNQUFNaEIsU0FBUU4sV0FBbUI7UUFDL0IsSUFBSTtZQUNGLE1BQU1VLFNBQVMsSUFBSWpDLG9HQUE2QkEsQ0FBQztnQkFBRWtDLFFBQVE3QixRQUFRQyxHQUFHLENBQUM2QixVQUFVO1lBQUM7WUFDbEYsTUFBTUYsT0FBT0ksSUFBSSxDQUFDLElBQUlsQywyRkFBb0JBLENBQUM7Z0JBQUVpRCxhQUFhN0I7WUFBWTtRQUN4RSxFQUFFLE9BQU9vQixLQUFLO1lBQ1osTUFBTSxJQUFJQyxNQUFNLENBQUMsZ0JBQWdCLEVBQUUsSUFBZUMsT0FBTyxFQUFFO1FBQzdEO0lBQ0Y7QUFDRjtBQUVPLE1BQU0sRUFBRXBDLE1BQU0sRUFBRUksTUFBTSxFQUFFWSxXQUFXLEVBQUVJLE9BQU8sRUFBRSxHQUFHekIsVUFBVUksWUFBWXVCLFFBQVEiLCJzb3VyY2VzIjpbIi9ob21lL25hcGUvRGV2bGFiL0hhY2thdGhvbnMvVW5pSGFjay9maW5hbC1maW5hbC91bmloYWNrLXByb2plY3QvbGliL3NlcnZpY2VzL2F1dGgudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtcbiAgQ29nbml0b0lkZW50aXR5UHJvdmlkZXJDbGllbnQsXG4gIFNpZ25VcENvbW1hbmQsXG4gIEluaXRpYXRlQXV0aENvbW1hbmQsXG4gIEdsb2JhbFNpZ25PdXRDb21tYW5kLFxufSBmcm9tICdAYXdzLXNkay9jbGllbnQtY29nbml0by1pZGVudGl0eS1wcm92aWRlcic7XG5pbXBvcnQgeyBDb2duaXRvQ2xhaW1zIH0gZnJvbSAnLi4vdHlwZXMnO1xuXG5jb25zdCBpc0xvY2FsID0gKHByb2Nlc3MuZW52LkFQUF9FTlYgPz8gJ2xvY2FsJykgIT09ICdwcm9kdWN0aW9uJztcblxuZXhwb3J0IGludGVyZmFjZSBBdXRoU2VydmljZSB7XG4gIHNpZ25VcChlbWFpbDogc3RyaW5nLCBwYXNzd29yZDogc3RyaW5nKTogUHJvbWlzZTx7IHVzZXJJZDogc3RyaW5nIH0+O1xuICBzaWduSW4oZW1haWw6IHN0cmluZywgcGFzc3dvcmQ6IHN0cmluZyk6IFByb21pc2U8eyBhY2Nlc3NUb2tlbjogc3RyaW5nOyBpZFRva2VuOiBzdHJpbmcgfT47XG4gIHZlcmlmeVRva2VuKHRva2VuOiBzdHJpbmcpOiBQcm9taXNlPENvZ25pdG9DbGFpbXM+O1xuICBzaWduT3V0KGFjY2Vzc1Rva2VuOiBzdHJpbmcpOiBQcm9taXNlPHZvaWQ+O1xufVxuXG5jb25zdCBsb2NhbFN0dWI6IEF1dGhTZXJ2aWNlID0ge1xuICBhc3luYyBzaWduVXAoZW1haWw6IHN0cmluZywgX3Bhc3N3b3JkOiBzdHJpbmcpIHtcbiAgICByZXR1cm4geyB1c2VySWQ6IGBsb2NhbC0ke2VtYWlsfWAgfTtcbiAgfSxcblxuICBhc3luYyBzaWduSW4oZW1haWw6IHN0cmluZywgX3Bhc3N3b3JkOiBzdHJpbmcpIHtcbiAgICBjb25zdCBwYXlsb2FkID0geyBzdWI6IGBsb2NhbC0ke2VtYWlsfWAsIGVtYWlsLCBleHA6IDk5OTk5OTk5OTkgfTtcbiAgICBjb25zdCBmYWtlVG9rZW4gPSBCdWZmZXIuZnJvbShKU09OLnN0cmluZ2lmeShwYXlsb2FkKSkudG9TdHJpbmcoJ2Jhc2U2NCcpO1xuICAgIHJldHVybiB7IGFjY2Vzc1Rva2VuOiBmYWtlVG9rZW4sIGlkVG9rZW46IGZha2VUb2tlbiB9O1xuICB9LFxuXG4gIGFzeW5jIHZlcmlmeVRva2VuKHRva2VuOiBzdHJpbmcpIHtcbiAgICBjb25zdCBkZWNvZGVkID0gSlNPTi5wYXJzZShCdWZmZXIuZnJvbSh0b2tlbiwgJ2Jhc2U2NCcpLnRvU3RyaW5nKCd1dGYtOCcpKSBhcyBDb2duaXRvQ2xhaW1zO1xuICAgIHJldHVybiBkZWNvZGVkO1xuICB9LFxuXG4gIGFzeW5jIHNpZ25PdXQoX2FjY2Vzc1Rva2VuOiBzdHJpbmcpIHtcbiAgICAvLyBuby1vcFxuICB9LFxufTtcblxuY29uc3QgYXdzSW1wbDogQXV0aFNlcnZpY2UgPSB7XG4gIGFzeW5jIHNpZ25VcChlbWFpbDogc3RyaW5nLCBwYXNzd29yZDogc3RyaW5nKSB7XG4gICAgdHJ5IHtcbiAgICAgIGNvbnN0IGNsaWVudCA9IG5ldyBDb2duaXRvSWRlbnRpdHlQcm92aWRlckNsaWVudCh7IHJlZ2lvbjogcHJvY2Vzcy5lbnYuQVdTX1JFR0lPTiB9KTtcbiAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgY2xpZW50LnNlbmQoXG4gICAgICAgIG5ldyBTaWduVXBDb21tYW5kKHtcbiAgICAgICAgICBDbGllbnRJZDogcHJvY2Vzcy5lbnYuTkVYVF9QVUJMSUNfQ09HTklUT19DTElFTlRfSUQhLFxuICAgICAgICAgIFVzZXJuYW1lOiBlbWFpbCxcbiAgICAgICAgICBQYXNzd29yZDogcGFzc3dvcmQsXG4gICAgICAgIH0pXG4gICAgICApO1xuICAgICAgcmV0dXJuIHsgdXNlcklkOiByZXNwb25zZS5Vc2VyU3ViISB9O1xuICAgIH0gY2F0Y2ggKGVycikge1xuICAgICAgdGhyb3cgbmV3IEVycm9yKGBzaWduVXAgZmFpbGVkOiAkeyhlcnIgYXMgRXJyb3IpLm1lc3NhZ2V9YCk7XG4gICAgfVxuICB9LFxuXG4gIGFzeW5jIHNpZ25JbihlbWFpbDogc3RyaW5nLCBwYXNzd29yZDogc3RyaW5nKSB7XG4gICAgdHJ5IHtcbiAgICAgIGNvbnN0IGNsaWVudCA9IG5ldyBDb2duaXRvSWRlbnRpdHlQcm92aWRlckNsaWVudCh7IHJlZ2lvbjogcHJvY2Vzcy5lbnYuQVdTX1JFR0lPTiB9KTtcbiAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgY2xpZW50LnNlbmQoXG4gICAgICAgIG5ldyBJbml0aWF0ZUF1dGhDb21tYW5kKHtcbiAgICAgICAgICBBdXRoRmxvdzogJ1VTRVJfUEFTU1dPUkRfQVVUSCcsXG4gICAgICAgICAgQ2xpZW50SWQ6IHByb2Nlc3MuZW52Lk5FWFRfUFVCTElDX0NPR05JVE9fQ0xJRU5UX0lEISxcbiAgICAgICAgICBBdXRoUGFyYW1ldGVyczogeyBVU0VSTkFNRTogZW1haWwsIFBBU1NXT1JEOiBwYXNzd29yZCB9LFxuICAgICAgICB9KVxuICAgICAgKTtcbiAgICAgIGNvbnN0IHJlc3VsdCA9IHJlc3BvbnNlLkF1dGhlbnRpY2F0aW9uUmVzdWx0ITtcbiAgICAgIHJldHVybiB7IGFjY2Vzc1Rva2VuOiByZXN1bHQuQWNjZXNzVG9rZW4hLCBpZFRva2VuOiByZXN1bHQuSWRUb2tlbiEgfTtcbiAgICB9IGNhdGNoIChlcnIpIHtcbiAgICAgIHRocm93IG5ldyBFcnJvcihgc2lnbkluIGZhaWxlZDogJHsoZXJyIGFzIEVycm9yKS5tZXNzYWdlfWApO1xuICAgIH1cbiAgfSxcblxuICBhc3luYyB2ZXJpZnlUb2tlbih0b2tlbjogc3RyaW5nKSB7XG4gICAgdHJ5IHtcbiAgICAgIGNvbnN0IHNlZ21lbnRzID0gdG9rZW4uc3BsaXQoJy4nKTtcbiAgICAgIGNvbnN0IHBheWxvYWQgPSBzZWdtZW50c1sxXS5yZXBsYWNlKC8tL2csICcrJykucmVwbGFjZSgvXy9nLCAnLycpO1xuICAgICAgY29uc3QgZGVjb2RlZCA9IEpTT04ucGFyc2UoQnVmZmVyLmZyb20ocGF5bG9hZCwgJ2Jhc2U2NCcpLnRvU3RyaW5nKCd1dGYtOCcpKSBhcyBDb2duaXRvQ2xhaW1zO1xuICAgICAgaWYgKGRlY29kZWQuZXhwIDw9IERhdGUubm93KCkgLyAxMDAwKSB7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcignVG9rZW4gaGFzIGV4cGlyZWQnKTtcbiAgICAgIH1cbiAgICAgIHJldHVybiBkZWNvZGVkO1xuICAgIH0gY2F0Y2ggKGVycikge1xuICAgICAgdGhyb3cgbmV3IEVycm9yKGB2ZXJpZnlUb2tlbiBmYWlsZWQ6ICR7KGVyciBhcyBFcnJvcikubWVzc2FnZX1gKTtcbiAgICB9XG4gIH0sXG5cbiAgYXN5bmMgc2lnbk91dChhY2Nlc3NUb2tlbjogc3RyaW5nKSB7XG4gICAgdHJ5IHtcbiAgICAgIGNvbnN0IGNsaWVudCA9IG5ldyBDb2duaXRvSWRlbnRpdHlQcm92aWRlckNsaWVudCh7IHJlZ2lvbjogcHJvY2Vzcy5lbnYuQVdTX1JFR0lPTiB9KTtcbiAgICAgIGF3YWl0IGNsaWVudC5zZW5kKG5ldyBHbG9iYWxTaWduT3V0Q29tbWFuZCh7IEFjY2Vzc1Rva2VuOiBhY2Nlc3NUb2tlbiB9KSk7XG4gICAgfSBjYXRjaCAoZXJyKSB7XG4gICAgICB0aHJvdyBuZXcgRXJyb3IoYHNpZ25PdXQgZmFpbGVkOiAkeyhlcnIgYXMgRXJyb3IpLm1lc3NhZ2V9YCk7XG4gICAgfVxuICB9LFxufTtcblxuZXhwb3J0IGNvbnN0IHsgc2lnblVwLCBzaWduSW4sIHZlcmlmeVRva2VuLCBzaWduT3V0IH0gPSBpc0xvY2FsID8gbG9jYWxTdHViIDogYXdzSW1wbDtcbiJdLCJuYW1lcyI6WyJDb2duaXRvSWRlbnRpdHlQcm92aWRlckNsaWVudCIsIlNpZ25VcENvbW1hbmQiLCJJbml0aWF0ZUF1dGhDb21tYW5kIiwiR2xvYmFsU2lnbk91dENvbW1hbmQiLCJpc0xvY2FsIiwicHJvY2VzcyIsImVudiIsIkFQUF9FTlYiLCJsb2NhbFN0dWIiLCJzaWduVXAiLCJlbWFpbCIsIl9wYXNzd29yZCIsInVzZXJJZCIsInNpZ25JbiIsInBheWxvYWQiLCJzdWIiLCJleHAiLCJmYWtlVG9rZW4iLCJCdWZmZXIiLCJmcm9tIiwiSlNPTiIsInN0cmluZ2lmeSIsInRvU3RyaW5nIiwiYWNjZXNzVG9rZW4iLCJpZFRva2VuIiwidmVyaWZ5VG9rZW4iLCJ0b2tlbiIsImRlY29kZWQiLCJwYXJzZSIsInNpZ25PdXQiLCJfYWNjZXNzVG9rZW4iLCJhd3NJbXBsIiwicGFzc3dvcmQiLCJjbGllbnQiLCJyZWdpb24iLCJBV1NfUkVHSU9OIiwicmVzcG9uc2UiLCJzZW5kIiwiQ2xpZW50SWQiLCJORVhUX1BVQkxJQ19DT0dOSVRPX0NMSUVOVF9JRCIsIlVzZXJuYW1lIiwiUGFzc3dvcmQiLCJVc2VyU3ViIiwiZXJyIiwiRXJyb3IiLCJtZXNzYWdlIiwiQXV0aEZsb3ciLCJBdXRoUGFyYW1ldGVycyIsIlVTRVJOQU1FIiwiUEFTU1dPUkQiLCJyZXN1bHQiLCJBdXRoZW50aWNhdGlvblJlc3VsdCIsIkFjY2Vzc1Rva2VuIiwiSWRUb2tlbiIsInNlZ21lbnRzIiwic3BsaXQiLCJyZXBsYWNlIiwiRGF0ZSIsIm5vdyJdLCJpZ25vcmVMaXN0IjpbXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///(ssr)/./lib/services/auth.ts\n");
 
 /***/ }),
 
@@ -256,7 +465,7 @@ function() { throw new Error("Attempted to call AuthContext() from the server bu
 var __webpack_require__ = require("../../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next","vendor-chunks/js-cookie","vendor-chunks/@swc"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F_not-found%2Fpage&page=%2F_not-found%2Fpage&appPaths=&pagePath=node_modules%2Fnext%2Fdist%2Fclient%2Fcomponents%2Fnot-found-error.js&appDir=%2Fhome%2Fnape%2FDevlab%2FHackathons%2FUniHack%2Ffinal-final%2Funihack-project%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2Fhome%2Fnape%2FDevlab%2FHackathons%2FUniHack%2Ffinal-final%2Funihack-project&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!")));
+var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/@smithy","vendor-chunks/@aws-sdk","vendor-chunks/next","vendor-chunks/@aws","vendor-chunks/js-cookie","vendor-chunks/@swc"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F_not-found%2Fpage&page=%2F_not-found%2Fpage&appPaths=&pagePath=node_modules%2Fnext%2Fdist%2Fclient%2Fcomponents%2Fnot-found-error.js&appDir=%2Fhome%2Fnape%2FDevlab%2FHackathons%2FUniHack%2Ffinal-final%2Funihack-project%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2Fhome%2Fnape%2FDevlab%2FHackathons%2FUniHack%2Ffinal-final%2Funihack-project&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!")));
 module.exports = __webpack_exports__;
 
 })();

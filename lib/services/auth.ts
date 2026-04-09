@@ -1,30 +1,97 @@
-import type { User } from "@/types";
+import {
+  CognitoIdentityProviderClient,
+  SignUpCommand,
+  InitiateAuthCommand,
+  GlobalSignOutCommand,
+} from '@aws-sdk/client-cognito-identity-provider';
+import { CognitoClaims } from '../types';
 
-const MOCK_USER: User = {
-  id: "usr_001",
-  email: "test@example.com",
-  name: "Test User",
+const isLocal = (process.env.APP_ENV ?? 'local') !== 'production';
+
+export interface AuthService {
+  signUp(email: string, password: string): Promise<{ userId: string }>;
+  signIn(email: string, password: string): Promise<{ accessToken: string; idToken: string }>;
+  verifyToken(token: string): Promise<CognitoClaims>;
+  signOut(accessToken: string): Promise<void>;
+}
+
+const localStub: AuthService = {
+  async signUp(email: string, _password: string) {
+    return { userId: `local-${email}` };
+  },
+
+  async signIn(email: string, _password: string) {
+    const payload = { sub: `local-${email}`, email, exp: 9999999999 };
+    const fakeToken = Buffer.from(JSON.stringify(payload)).toString('base64');
+    return { accessToken: fakeToken, idToken: fakeToken };
+  },
+
+  async verifyToken(token: string) {
+    const decoded = JSON.parse(Buffer.from(token, 'base64').toString('utf-8')) as CognitoClaims;
+    return decoded;
+  },
+
+  async signOut(_accessToken: string) {
+    // no-op
+  },
 };
 
-const MOCK_PASSWORD = "password123";
+const awsImpl: AuthService = {
+  async signUp(email: string, password: string) {
+    try {
+      const client = new CognitoIdentityProviderClient({ region: process.env.APP_AWS_REGION ?? process.env.AWS_REGION });
+      const response = await client.send(
+        new SignUpCommand({
+          ClientId: process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID!,
+          Username: email,
+          Password: password,
+        })
+      );
+      return { userId: response.UserSub! };
+    } catch (err) {
+      throw new Error(`signUp failed: ${(err as Error).message}`);
+    }
+  },
 
-/**
- * Mock auth service — replace with AWS Cognito / real auth provider later.
- */
-export async function authenticateUser(
-  email: string,
-  password: string
-): Promise<{ user: User } | { error: string }> {
-  // Allow any email/password for mock purposes during the hackathon
-  return {
-    user: {
-      id: "usr_" + Math.random().toString(36).substring(2, 11),
-      email,
-      name: email.split("@")[0] || "Explorer",
-    },
-  };
-}
+  async signIn(email: string, password: string) {
+    try {
+      const client = new CognitoIdentityProviderClient({ region: process.env.APP_AWS_REGION ?? process.env.AWS_REGION });
+      const response = await client.send(
+        new InitiateAuthCommand({
+          AuthFlow: 'USER_PASSWORD_AUTH',
+          ClientId: process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID!,
+          AuthParameters: { USERNAME: email, PASSWORD: password },
+        })
+      );
+      const result = response.AuthenticationResult!;
+      return { accessToken: result.AccessToken!, idToken: result.IdToken! };
+    } catch (err) {
+      throw new Error(`signIn failed: ${(err as Error).message}`);
+    }
+  },
 
-export function getMockUser(): User {
-  return MOCK_USER;
-}
+  async verifyToken(token: string) {
+    try {
+      const segments = token.split('.');
+      const payload = segments[1].replace(/-/g, '+').replace(/_/g, '/');
+      const decoded = JSON.parse(Buffer.from(payload, 'base64').toString('utf-8')) as CognitoClaims;
+      if (decoded.exp <= Date.now() / 1000) {
+        throw new Error('Token has expired');
+      }
+      return decoded;
+    } catch (err) {
+      throw new Error(`verifyToken failed: ${(err as Error).message}`);
+    }
+  },
+
+  async signOut(accessToken: string) {
+    try {
+      const client = new CognitoIdentityProviderClient({ region: process.env.APP_AWS_REGION ?? process.env.AWS_REGION });
+      await client.send(new GlobalSignOutCommand({ AccessToken: accessToken }));
+    } catch (err) {
+      throw new Error(`signOut failed: ${(err as Error).message}`);
+    }
+  },
+};
+
+export const { signUp, signIn, verifyToken, signOut } = isLocal ? localStub : awsImpl;

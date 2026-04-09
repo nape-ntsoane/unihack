@@ -62,13 +62,11 @@ export default function CommunityPage() {
   }, [step, activeMessages, nextPerson]);
 
   const handleSend = (content: string) => {
-    const saved = JSON.parse(localStorage.getItem("kindness_moments") || "[]");
-    saved.push({
-      username: currentUser.username,
-      message: content,
-      timestamp: new Date().toISOString()
-    });
-    localStorage.setItem("kindness_moments", JSON.stringify(saved));
+    fetch('/api/community', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messageType: 'kindness', recipientId: currentUser.username }),
+    }).catch((err) => console.error('Failed to save kindness moment:', err));
     setShowNextFeedback(true);
     setTimeout(() => {
       nextPerson();

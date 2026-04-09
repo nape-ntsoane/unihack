@@ -13,14 +13,18 @@ export function GamesDashboard({ onPlay }: GamesDashboardProps) {
   const [stats, setStats] = useState({ totalGames: 0, highScore: 0, avgScore: 0 });
 
   useEffect(() => {
-    const rawStats = JSON.parse(localStorage.getItem("game_stats") || "[]");
-    if (rawStats.length > 0) {
-      const total = rawStats.length;
-      const scores = rawStats.map((s: GameResult) => s.score);
-      const high = Math.max(...scores);
-      const avg = Math.round(scores.reduce((a: number, b: number) => a + b, 0) / total);
-      setStats({ totalGames: total, highScore: high, avgScore: avg });
-    }
+    fetch('/api/game')
+      .then(res => res.json())
+      .then((rawStats: GameResult[]) => {
+        if (rawStats.length > 0) {
+          const total = rawStats.length;
+          const scores = rawStats.map((s: GameResult) => s.score);
+          const high = Math.max(...scores);
+          const avg = Math.round(scores.reduce((a: number, b: number) => a + b, 0) / total);
+          setStats({ totalGames: total, highScore: high, avgScore: avg });
+        }
+      })
+      .catch(() => {});
   }, []);
 
   return (

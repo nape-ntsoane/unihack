@@ -1,0 +1,154 @@
+{
+  "/WellnessStack/UsersTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "UsersTable9725E9C8"
+      }
+    }
+  ],
+  "/WellnessStack/CheckinsTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "CheckinsTable8511EA48"
+      }
+    }
+  ],
+  "/WellnessStack/GamesTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "GamesTableB32AB610"
+      }
+    }
+  ],
+  "/WellnessStack/CommunityTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "CommunityTableD1223F97"
+      }
+    }
+  ],
+  "/WellnessStack/UserPoolId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "UserPoolId"
+    }
+  ],
+  "/WellnessStack/UserPoolClientId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "UserPoolClientId"
+    }
+  ],
+  "/WellnessStack/UsersTableName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "UsersTableName"
+    }
+  ],
+  "/WellnessStack/CheckinsTableName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckinsTableName"
+    }
+  ],
+  "/WellnessStack/GamesTableName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GamesTableName"
+    }
+  ],
+  "/WellnessStack/CommunityTableName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CommunityTableName"
+    }
+  ],
+  "/WellnessStack/AmplifyAppUrl": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AmplifyAppUrl"
+    }
+  ],
+  "/WellnessStack/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/WellnessStack/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/WellnessStack/WellnessUserPool/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WellnessUserPool3BAC058A"
+    }
+  ],
+  "/WellnessStack/WellnessAppClient/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WellnessAppClientC7A3A2F0"
+    }
+  ],
+  "/WellnessStack/UsersTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "UsersTable9725E9C8"
+    }
+  ],
+  "/WellnessStack/CheckinsTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckinsTable8511EA48"
+    }
+  ],
+  "/WellnessStack/GamesTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GamesTableB32AB610"
+    }
+  ],
+  "/WellnessStack/CommunityTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CommunityTableD1223F97"
+    }
+  ],
+  "/WellnessStack/AmplifyServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AmplifyServiceRole1EB3E935"
+    }
+  ],
+  "/WellnessStack/WellnessApp/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WellnessApp2C1B475D"
+    }
+  ],
+  "/WellnessStack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    }
+  ],
+  "/WellnessStack/AmplifyServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AmplifyServiceRoleDefaultPolicyA4A29B19"
+    }
+  ],
+  "/WellnessStack/WellnessApp/main/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WellnessAppmain19A603A9"
+    }
+  ]
+}

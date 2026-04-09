@@ -11,6 +11,10 @@ export async function POST(req: NextRequest) {
   if (!body.message) {
     return NextResponse.json({ error: "message is required" }, { status: 400 });
   }
-  const result = await chatResponse(body.message);
-  return NextResponse.json(result);
+  try {
+    const result = await chatResponse(body.message);
+    return NextResponse.json(result);
+  } catch {
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
 }

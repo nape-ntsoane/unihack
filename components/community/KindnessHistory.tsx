@@ -19,12 +19,27 @@ const GRADIENTS = [
   "from-purple-400 to-pink-400",
 ];
 
+interface CommunityInteractionData {
+  recipientId: string;
+  messageType: string;
+  timestamp: string;
+}
+
 export function KindnessHistory({ onClose }: KindnessHistoryProps) {
   const [moments, setMoments] = useState<Moment[]>([]);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("kindness_moments") || "[]");
-    setMoments(saved.reverse()); // Show newest first
+    fetch('/api/community')
+      .then(res => res.json())
+      .then((data: CommunityInteractionData[]) => {
+        const mapped = data.map(item => ({
+          username: item.recipientId,
+          message: item.messageType,
+          timestamp: item.timestamp,
+        }));
+        setMoments(mapped.reverse()); // Show newest first
+      })
+      .catch(() => setMoments([]));
   }, []);
 
   return (

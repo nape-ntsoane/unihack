@@ -8,6 +8,10 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
-  const result = await analyzeUserData(body);
-  return NextResponse.json(result);
+  try {
+    const result = await analyzeUserData(body);
+    return NextResponse.json(result);
+  } catch {
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
 }

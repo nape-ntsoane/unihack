@@ -13,16 +13,6 @@ interface PlatformStats {
   gameCount: number;
 }
 
-const MOCK_CHECKINS: CheckinData[] = [
-  { date: "2024-03-25", mood: 4, stress: 7, energy: 3, sleep: 4, social: 3 },
-  { date: "2024-03-26", mood: 5, stress: 6, energy: 4, sleep: 5, social: 4 },
-  { date: "2024-03-27", mood: 6, stress: 5, energy: 6, sleep: 6, social: 5 },
-  { date: "2024-03-28", mood: 5, stress: 8, energy: 3, sleep: 4, social: 2 },
-  { date: "2024-03-29", mood: 7, stress: 4, energy: 8, sleep: 7, social: 8 },
-  { date: "2024-03-30", mood: 8, stress: 3, energy: 7, sleep: 8, social: 9 },
-  { date: "2024-03-31", mood: 7, stress: 4, energy: 9, sleep: 8, social: 7 },
-];
-
 export default function InsightsPage() {
   const [history, setHistory] = useState<CheckinData[]>([]);
   const [platformStats, setPlatformStats] = useState<PlatformStats>({
@@ -34,32 +24,29 @@ export default function InsightsPage() {
 
   useEffect(() => {
     // 1. Load Check-in History
-    const savedCheckins = localStorage.getItem("checkin_history");
-    if (!savedCheckins) {
-      localStorage.setItem("checkin_history", JSON.stringify(MOCK_CHECKINS));
-      setHistory(MOCK_CHECKINS);
-    } else {
-      setHistory(JSON.parse(savedCheckins));
-    }
+    fetch('/api/checkin')
+      .then(res => res.json())
+      .then((data: CheckinData[]) => setHistory(data))
+      .catch(() => setHistory([]));
 
-    // 2. Load Kindness Moments
-    const savedKindness = JSON.parse(localStorage.getItem("kindness_moments") || "[]");
-    
-    // 3. Load Game Stats
-    const savedGames = JSON.parse(localStorage.getItem("game_stats") || "[]");
-    let high = 0;
-    let avg = 0;
-    if (savedGames.length > 0) {
-      const scores = savedGames.map((g: GameResult) => g.score);
-      high = Math.max(...scores);
-      avg = Math.round(scores.reduce((a: number, b: number) => a + b, 0) / savedGames.length);
-    }
-
-    setPlatformStats({
-      totalKindness: savedKindness.length,
-      highGameScore: high,
-      avgGameScore: avg,
-      gameCount: savedGames.length
+    // 2. Load Kindness Moments + 3. Load Game Stats
+    Promise.all([
+      fetch('/api/community').then(res => res.json()).catch(() => []),
+      fetch('/api/game').then(res => res.json()).catch(() => []),
+    ]).then(([kindnessData, savedGames]: [unknown[], GameResult[]]) => {
+      let high = 0;
+      let avg = 0;
+      if (savedGames.length > 0) {
+        const scores = savedGames.map((g: GameResult) => g.score);
+        high = Math.max(...scores);
+        avg = Math.round(scores.reduce((a: number, b: number) => a + b, 0) / savedGames.length);
+      }
+      setPlatformStats({
+        totalKindness: kindnessData.length,
+        highGameScore: high,
+        avgGameScore: avg,
+        gameCount: savedGames.length,
+      });
     });
   }, []);
 

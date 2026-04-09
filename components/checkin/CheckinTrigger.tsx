@@ -29,9 +29,12 @@ export function CheckinTrigger() {
   }, []);
 
   const handleComplete = (data: CheckinData) => {
-    const history = JSON.parse(localStorage.getItem("checkin_history") || "[]");
-    localStorage.setItem("checkin_history", JSON.stringify([...history, data]));
     localStorage.setItem("last_checkin_timestamp", new Date().toISOString());
+    fetch('/api/checkin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).catch((err) => console.error('Failed to save check-in:', err));
     setShowModal(false);
   };
 

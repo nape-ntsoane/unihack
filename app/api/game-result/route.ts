@@ -1,19 +1,28 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { getUserIdFromRequest } from "@/lib/session";
+import { saveGameInteraction } from "@/lib/services/db";
 
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
+  const userId = await getUserIdFromRequest(req);
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  let body: Record<string, unknown>;
   try {
-    const body = await request.json();
-    console.log("Mock AWS Integration: Received Game Result", body);
-    
-    // Simulate AWS processing delay
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    return NextResponse.json({ 
-      success: true, 
-      message: "Result saved to AWS (mock)",
-      received: body 
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
+  try {
+    await saveGameInteraction(userId, {
+      userId,
+      timestamp: new Date().toISOString(),
+      gameType: (body.gameType as string) ?? "unknown",
+      score: (body.score as number) ?? 0,
+      metrics: (body.metrics as Record<string, unknown>) ?? {},
     });
-  } catch (err) {
-    return NextResponse.json({ success: false, error: "Invalid data" }, { status: 400 });
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

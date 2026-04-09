@@ -37,7 +37,7 @@ export default function InsightsPage() {
       let high = 0;
       let avg = 0;
       if (savedGames.length > 0) {
-        const scores = savedGames.map((g: GameResult) => g.score);
+      const scores = savedGames.map((g: GameResult) => g.score ?? 0);
         high = Math.max(...scores);
         avg = Math.round(scores.reduce((a: number, b: number) => a + b, 0) / savedGames.length);
       }

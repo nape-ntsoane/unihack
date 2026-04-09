@@ -61,7 +61,7 @@ export default function CommunityPage() {
     }
   }, [step, activeMessages, nextPerson]);
 
-  const handleSend = (content: string) => {
+  const handleSend = (_content: string) => {
     fetch('/api/community', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

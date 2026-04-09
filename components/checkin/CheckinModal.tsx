@@ -17,9 +17,11 @@ const QUESTIONS = [
   { key: "social", label: "Social energy level?", min: "🤐", max: "🗣️" },
 ];
 
+type CheckinFields = { mood: number; stress: number; energy: number; sleep: number; social: number };
+
 export function CheckinModal({ onComplete, onClose }: CheckinModalProps) {
   const [step, setStep] = useState(0);
-  const [data, setData] = useState<Partial<CheckinData>>({
+  const [data, setData] = useState<CheckinFields>({
     mood: 5,
     stress: 5,
     energy: 5,
@@ -34,7 +36,8 @@ export function CheckinModal({ onComplete, onClose }: CheckinModalProps) {
       setStep(step + 1);
     } else {
       onComplete({
-        ...data as CheckinData,
+        ...data,
+        timestamp: new Date().toISOString(),
         date: new Date().toISOString(),
       });
     }
@@ -61,7 +64,7 @@ export function CheckinModal({ onComplete, onClose }: CheckinModalProps) {
 
           <QuestionSlider
             label={currentQuestion.label}
-            value={(data as any)[currentQuestion.key]}
+            value={data[currentQuestion.key as keyof CheckinFields]}
             onChange={(val) => setData({ ...data, [currentQuestion.key]: val })}
             minLabel={currentQuestion.min}
             maxLabel={currentQuestion.max}

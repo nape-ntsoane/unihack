@@ -3,7 +3,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import type { AuthContextValue, User } from "@/types";
-import { authenticateUser } from "@/lib/services/auth";
 import { SESSION_COOKIE } from "@/lib/auth-utils";
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -20,7 +19,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (stored) {
       try {
         const parsed = JSON.parse(stored) as User;
-        // Ensure avatar exists
         if (!parsed.avatar) parsed.avatar = DEFAULT_AVATAR;
         setUser(parsed);
       } catch {
@@ -31,22 +29,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   async function login(email: string, password: string) {
-    const result = await authenticateUser(email, password);
-    if ("error" in result) return { error: result.error };
-    
-    const userWithAvatar = {
-      ...result.user,
-      avatar: result.user.avatar || DEFAULT_AVATAR
-    };
-
-    setUser(userWithAvatar);
-    Cookies.set(SESSION_COOKIE, JSON.stringify(userWithAvatar), { expires: 1 });
-    return {};
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        return { error: data.error ?? 'Login failed' };
+      }
+      const userObj: User = { id: email, email, name: email, avatar: DEFAULT_AVATAR };
+      setUser(userObj);
+      Cookies.set(SESSION_COOKIE, JSON.stringify(userObj), { expires: 1 });
+      return {};
+    } catch {
+      return { error: 'Network error' };
+    }
   }
 
   function logout() {
     setUser(null);
     Cookies.remove(SESSION_COOKIE);
+    fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
   }
 
   function updateUser(updates: Partial<User>) {

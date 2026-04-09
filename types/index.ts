@@ -89,7 +89,9 @@ export interface ChatSession {
 }
 
 export interface CheckinData {
-  date: string;
+  userId?: string;
+  date?: string;
+  timestamp?: string;
   mood: number;
   stress: number;
   energy: number;

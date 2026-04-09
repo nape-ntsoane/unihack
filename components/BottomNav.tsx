@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   Gamepad2, 
   Users, 

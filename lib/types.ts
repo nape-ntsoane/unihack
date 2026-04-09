@@ -3,6 +3,7 @@ export interface UserRecord {
   email: string;
   name: string;
   university: string;
+  avatar?: string;
   createdAt: string;
 }
 
@@ -11,24 +12,29 @@ export interface CheckinData {
   timestamp: string;
   mood: number;
   stress: number;
-  energy: number;
-  sleep: number;
-  social: number;
+  energy?: number;
+  sleep?: number;
+  social?: number;
+  notes?: string;
 }
 
 export interface GameInteractionData {
   userId: string;
   timestamp: string;
-  gameType: string;
+  gameType?: string;
+  gameId?: string;
   score: number;
-  metrics: Record<string, unknown>;
+  duration?: number;
+  metrics?: Record<string, unknown>;
 }
 
 export interface CommunityInteractionData {
   userId: string;
   timestamp: string;
-  messageType: string;
-  recipientId: string;
+  messageType?: string;
+  type?: "kindness" | "support" | "reflection";
+  content?: string;
+  recipientId?: string;
 }
 
 export interface AnalyzeResponse {

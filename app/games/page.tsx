@@ -6,12 +6,32 @@ import dynamic from "next/dynamic";
 import { Layout } from "@/components/Layout";
 import { GamesDashboard } from "@/components/games/GamesDashboard";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
+
 const GameFeed = dynamic(() => import("@/components/games/GameFeed"), {
   ssr: false,
 });
 
 export default function GamesPage() {
+  const { user, isLoading } = useAuth();
+  const router = useRouter();
   const [isPlaying, setIsPlaying] = useState(true);
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.replace("/");
+    }
+  }, [user, isLoading, router]);
+
+  if (isLoading || !user) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-orange-500/30 border-t-orange-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <Layout>

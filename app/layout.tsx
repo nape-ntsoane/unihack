@@ -4,8 +4,8 @@ import { AuthProvider } from "@/lib/auth-context";
 import { MobileOnlyOverlay } from "@/components/MobileOnlyOverlay";
 
 export const metadata: Metadata = {
-  title: "MyApp",
-  description: "Local fullstack Next.js app",
+  title: "Serenity",
+  description: "Mindful student wellness redefined.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

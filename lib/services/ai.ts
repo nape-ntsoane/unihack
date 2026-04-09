@@ -50,12 +50,15 @@ const awsImpl: AIService = {
         })
       );
       try {
-        const parsed = JSON.parse(new TextDecoder().decode(response.body));
+        const decoded = new TextDecoder().decode(response.body);
+        const parsed = JSON.parse(decoded);
         return (parsed.content[0].text as string).trim();
-      } catch {
+      } catch (e) {
+        console.error("AIService: Failed to parse Bedrock response:", e);
         return '';
       }
-    } catch {
+    } catch (e) {
+      console.error("AIService: Bedrock invocation error:", e);
       return '';
     }
   },

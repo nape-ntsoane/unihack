@@ -1400,6 +1400,11 @@ h1, h2, h3, h4, h5, h6{
      -moz-user-select: none;
           user-select: none;
 }
+.select-all{
+  -webkit-user-select: all;
+     -moz-user-select: all;
+          user-select: all;
+}
 .resize{
   resize: both;
 }
@@ -3540,6 +3545,10 @@ h1, h2, h3, h4, h5, h6{
  
   .sm\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+ 
+  .sm\:p-8{
+    padding: 2rem;
   }
  
   .sm\:px-0{

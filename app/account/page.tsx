@@ -60,6 +60,7 @@ export default function AccountPage() {
           <div>
             <h1 className="text-2xl font-black text-gray-800 tracking-tight">My Account</h1>
             <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{user.email}</p>
+            <p className="mt-2 text-[9px] font-mono text-gray-300 opacity-50 select-all">ID: {user.id}</p>
           </div>
         </header>
 

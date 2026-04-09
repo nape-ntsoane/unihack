@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import { Layout } from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Sparkles, BrainCircuit, MessageSquare, Globe } from "lucide-react";
+import { Send, Sparkles, BrainCircuit, MessageSquare, Globe, X } from "lucide-react";
+import Link from "next/link";
 
 interface Message {
   role: "user" | "assistant";
@@ -109,9 +110,17 @@ export default function ChatPage() {
               </div>
             </div>
           </div>
-          <button className="w-10 h-10 rounded-2xl hover:bg-white/5 flex items-center justify-center text-[var(--text-secondary)] transition-colors">
-            <Globe size={18} strokeWidth={1.5} />
-          </button>
+          <div className="flex items-center gap-2">
+            <button className="w-10 h-10 rounded-2xl hover:bg-white/5 flex items-center justify-center text-[var(--text-secondary)] transition-colors">
+              <Globe size={18} strokeWidth={1.5} />
+            </button>
+            <Link 
+              href="/sessions"
+              className="w-10 h-10 rounded-2xl bg-white/5 hover:bg-white/10 flex items-center justify-center text-[var(--text-secondary)] transition-colors"
+            >
+              <X size={18} strokeWidth={2} />
+            </Link>
+          </div>
         </header>
 
         {/* Chat Body */}

@@ -10,6 +10,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
   const pathname = usePathname();
 
+  const isFullscreen = pathname === "/games" || pathname === "/chat";
+
   return (
     <div className="min-h-screen relative overflow-x-hidden flex flex-col pt-safe-top">
       {/* Background Layer */}
@@ -36,7 +38,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </AnimatePresence>
       </main>
 
-      {user && <BottomNav key="bottom-nav" />}
+      {user && !isFullscreen && <BottomNav key="bottom-nav" />}
     </div>
   );
 }

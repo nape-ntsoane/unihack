@@ -11,11 +11,11 @@ export function TrendChart({ data, label, color }: TrendChartProps) {
   const height = 100;
   const width = 300;
   
-  const points = data.map((val, i) => {
+  const points = data.length > 1 ? data.map((val, i) => {
     const x = (i / (data.length - 1)) * width;
     const y = height - (val / max) * height;
     return `${x},${y}`;
-  }).join(" ");
+  }).join(" ") : data.length === 1 ? `0,${height - (data[0] / max) * height} ${width},${height - (data[0] / max) * height}` : "";
 
   return (
     <div className="bg-white p-6 rounded-[32px] border border-gray-50 shadow-sm">

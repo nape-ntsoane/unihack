@@ -18,10 +18,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
   }
 
+  const userId = searchParams.get("userId") || DEMO_USER_ID;
+
   try {
     // 1. Idempotency Check: Does demo user exist?
     // Using the service abstraction which handles local/prod logic and IAM roles
-    const existingUser = await getUserProfile(DEMO_USER_ID);
+    const existingUser = await getUserProfile(userId);
 
     if (existingUser) {
       return NextResponse.json({ 
@@ -34,7 +36,7 @@ export async function GET(req: NextRequest) {
 
     // 2. Seed Demo User
     await createUser({
-      userId: DEMO_USER_ID,
+      userId: userId,
       email: "demo@serenity.ac.za",
       name: "Neo Serenity",
       university: "University of Cape Town",
@@ -49,8 +51,8 @@ export async function GET(req: NextRequest) {
       const mood = Math.min(100, 60 + (14 - i) * 2 + Math.floor(Math.random() * 10));
       const stress = Math.max(0, 70 - (14 - i) * 3 + Math.floor(Math.random() * 10));
 
-      await saveCheckin(DEMO_USER_ID, {
-        userId: DEMO_USER_ID,
+      await saveCheckin(userId, {
+        userId: userId,
         timestamp: date.toISOString(),
         mood,
         stress,
@@ -63,8 +65,8 @@ export async function GET(req: NextRequest) {
     for (let i = 0; i < 20; i++) {
       const date = new Date();
       date.setHours(date.getHours() - i * 4);
-      await saveGameInteraction(DEMO_USER_ID, {
-        userId: DEMO_USER_ID,
+      await saveGameInteraction(userId, {
+        userId: userId,
         timestamp: date.toISOString(),
         gameId: gameTypes[i % gameTypes.length],
         score: 400 + i * 20 + Math.floor(Math.random() * 200),
@@ -76,8 +78,8 @@ export async function GET(req: NextRequest) {
     for (let i = 0; i < 8; i++) {
       const date = new Date();
       date.setHours(date.getHours() - i * 12);
-      await saveCommunityInteraction(DEMO_USER_ID, {
-        userId: DEMO_USER_ID,
+      await saveCommunityInteraction(userId, {
+        userId: userId,
         timestamp: date.toISOString(),
         content: `Ripples of kindness sent #${i + 1}`,
         type: "kindness"
@@ -87,7 +89,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ 
       success: true, 
       message: "Production demo data successfully initialized via DBService.",
-      userId: DEMO_USER_ID
+      userId: userId
     });
 
   } catch (err: any) {

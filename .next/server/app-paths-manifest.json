@@ -1,12 +1,7 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/checkin/route": "app/api/checkin/route.js",
-  "/api/community/route": "app/api/community/route.js",
-  "/api/game/route": "app/api/game/route.js",
-  "/api/analyze/route": "app/api/analyze/route.js",
   "/page": "app/page.js",
   "/games/page": "app/games/page.js",
-  "/chat/page": "app/chat/page.js",
   "/sessions/page": "app/sessions/page.js",
+  "/chat/page": "app/chat/page.js",
   "/stats/page": "app/stats/page.js"
 }

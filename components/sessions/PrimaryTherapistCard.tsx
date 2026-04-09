@@ -15,7 +15,7 @@ export function PrimaryTherapistCard({ therapist, onBook }: PrimaryTherapistCard
     <motion.div 
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="p-8 glass-card bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] border-white/10 shadow-2xl overflow-hidden relative"
+      className="p-6 sm:p-8 glass-card bg-gradient-to-br from-[var(--surface)] to-[var(--bg)] border-white/10 shadow-2xl overflow-hidden relative w-full"
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/5 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2" />
       

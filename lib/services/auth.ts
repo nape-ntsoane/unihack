@@ -4,9 +4,9 @@ import {
   InitiateAuthCommand,
   GlobalSignOutCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { CognitoClaims } from '../types';
+import { APP_ENV, CognitoClaims } from '../types';
 
-const isLocal = (process.env.APP_ENV ?? 'local') !== 'production';
+const isLocal = APP_ENV !== 'production';
 
 export interface AuthService {
   signUp(email: string, password: string): Promise<{ userId: string }>;

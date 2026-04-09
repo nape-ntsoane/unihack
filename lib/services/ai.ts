@@ -1,7 +1,8 @@
 import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
+import { APP_ENV } from '../types';
 import type { AnalyzeResponse, ChatResponse } from '../types';
 
-const isLocal = (process.env.APP_ENV ?? 'local') !== 'production';
+const isLocal = APP_ENV !== 'production';
 
 interface AIService {
   generateResponse(systemPrompt: string, userInput: string): Promise<string>;

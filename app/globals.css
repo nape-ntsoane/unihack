@@ -84,6 +84,10 @@ html {
   .input-field {
     @apply w-full bg-white/[0.06] border border-white/10 rounded-[14px] px-[18px] py-[14px] text-sm text-white placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--primary)] focus:ring-[3px] focus:ring-[var(--glow)] transition-all;
   }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
 }
 
 @keyframes floatGentle {

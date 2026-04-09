@@ -52,4 +52,4 @@ export interface CognitoClaims {
   exp: number;
 }
 
-export const APP_ENV = (process.env.APP_ENV ?? 'local') as 'local' | 'production';
+export const APP_ENV = (process.env.APP_ENV || process.env.NODE_ENV || 'local') === 'production' ? 'production' : 'local';

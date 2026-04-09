@@ -5,6 +5,7 @@ import {
   QueryCommand,
 } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
+import { APP_ENV } from '../types';
 import type {
   UserRecord,
   CheckinData,
@@ -12,7 +13,7 @@ import type {
   CommunityInteractionData,
 } from '../types';
 
-const isLocal = (process.env.APP_ENV ?? 'local') !== 'production';
+const isLocal = APP_ENV !== 'production';
 
 // ─── Interface ───────────────────────────────────────────────────────────────
 

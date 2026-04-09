@@ -34,10 +34,12 @@ export function AuthForm() {
     setLoading(true);
 
     try {
-      // frictionless Demo Mode entrance
-      await login(email, password);
+      const result = await login(email, password);
+      if (result.error) {
+        setError(result.error);
+      }
     } catch (err) {
-      setError("Something went wrong. Please try again.");
+      setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }

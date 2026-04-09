@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST="{\"app/games/page.tsx -> @/components/games/GameFeed\":{\"id\":\"app/games/page.tsx -> @/components/games/GameFeed\",\"files\":[\"static/chunks/_app-pages-browser_components_games_GameFeed_tsx.js\"]}}"

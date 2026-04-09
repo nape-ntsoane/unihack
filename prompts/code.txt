@@ -1,0 +1,24 @@
+Authentication
+Get-to-know you test
+Generate games & an identity
+A walkthrough
+Home screen
+Navigation bar
+    Community : user suggestions, usernames instead of real-names, optional
+        Messaging with pre-made messages
+    Games
+        immediately popup a game
+        Scrollable games : show more of liked games: show count of people played/people loved it, save games
+    Stats page
+
+    System to flag a user to the school’s mental health dept & a therapist on the platform
+
+    aiChat
+        Suggested messages
+    Optional spontaneous curated messages
+
+    Real person : see a list of chats, suggest sticking to one person
+        System to flag a user to the school’s mental health dept & a therapist on the platform
+Affirmation notifications
+Weekly quizzes
+Default : games

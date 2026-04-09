@@ -1,0 +1,16 @@
+- after the This is where things begin page, walk through of the platform must follow showing the user the 4 items on the navigation bar with a brief description
+- after that walk through show a button that will take the user to the games page
+
+- a dashboard for admin to onboard a therapist
+
+
+it must be full screen with a cross button at a top corner to exit where they will taken to the games dashboard which will now have a large play button and some game statistics at the bottom
+
+the app is mobile first, if its on any other device display an overlay to say its only optimized for mobile
+
+
+since we want to have a model that is tailored on the user's data, would it be possible to incrementally train the ai model on the user's data through some other form than having to say for example attach the user's data from the database along with every prompt which is easy but not very efficient and secure. is this possible with aws? it may not be training but some other form of data processing that can be done on the user's data to make the ai model more tailored to the user.
+
+in the game-feed-implementation there's code from my team member who was working on the game feed tik tok feature. I want you to integrate that into the games page. only that feature, nothing else.
+
+- the whole project is to be deployed
